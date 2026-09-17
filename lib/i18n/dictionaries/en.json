@@ -458,5 +458,13 @@
   "whatsapp": {
     "general": "Hello Vee, I'm interested in your digital platform for businesses. I'd like to know more.",
     "formTemplate": "Hello Vee,\nBusiness: {business}\nType: {type}\nContact: {name}\nPhone: {phone}\nWhatsApp: {whatsapp}\nInstagram: {instagram}\nBranches: {branches}\nPlan: {plan}\nMessage: {message}"
+  },
+  "errors": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you're looking for doesn't exist or may have moved.",
+    "errorTitle": "Something went wrong",
+    "errorBody": "An unexpected error occurred. Please try again, or head back to the homepage.",
+    "tryAgain": "Try again",
+    "backHome": "Back to homepage"
   }
 }

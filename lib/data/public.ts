@@ -127,6 +127,18 @@ export async function getPublishedBusinessByUsername(username: string) {
   }
 }
 
+/** For app/sitemap.ts only -- every published business's username + last-updated timestamp, nothing else. */
+export async function getPublishedBusinessUsernames(): Promise<{ username: string; updatedAt: string }[]> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.from("businesses").select("username, updated_at").eq("status", "published");
+    if (error || !data) throw error ?? new Error("empty");
+    return data.map((b) => ({ username: b.username, updatedAt: b.updated_at }));
+  } catch {
+    return [];
+  }
+}
+
 export async function getBusinessLinks(businessId: string) {
   const supabase = await createClient();
   const { data } = await supabase

@@ -1,0 +1,878 @@
+{
+  "WHY_ITEMS": [
+    {
+      "icon": "tap",
+      "title": {
+        "en": "Tap",
+        "ar": "لمسة",
+        "ku": "دەستلێدان"
+      },
+      "desc": {
+        "en": "Instant NFC experience.",
+        "ar": "تجربة NFC فورية.",
+        "ku": "ئەزموونی NFC ی دەستبەجێ."
+      }
+    },
+    {
+      "icon": "qr",
+      "title": {
+        "en": "Scan",
+        "ar": "مسح",
+        "ku": "سکان"
+      },
+      "desc": {
+        "en": "QR backup for every customer.",
+        "ar": "رمز QR احتياطي لكل عميل.",
+        "ku": "کۆدی QR وەک یەدەک بۆ هەر کڕیارێک."
+      }
+    },
+    {
+      "icon": "grid",
+      "title": {
+        "en": "Connect",
+        "ar": "تواصل",
+        "ku": "پەیوەندی"
+      },
+      "desc": {
+        "en": "Menu, WhatsApp, Instagram, Maps and more.",
+        "ar": "القائمة، واتساب، إنستغرام، الخرائط والمزيد.",
+        "ku": "مێنوو، واتساپ، ئینستاگرام، گووگڵ ماپس و زیاتر."
+      }
+    },
+    {
+      "icon": "growth",
+      "title": {
+        "en": "Grow",
+        "ar": "نمو",
+        "ku": "گەشەکردن"
+      },
+      "desc": {
+        "en": "Improve customer engagement and reviews.",
+        "ar": "حسّن تفاعل العملاء والتقييمات.",
+        "ku": "کارلێکی کڕیار و هەڵسەنگاندنەکان باشتر بکە."
+      }
+    },
+    {
+      "icon": "chartLine",
+      "title": {
+        "en": "Track",
+        "ar": "تتبع",
+        "ku": "شوێنکەوتن"
+      },
+      "desc": {
+        "en": "Understand how customers interact with your business.",
+        "ar": "افهم كيف يتفاعل العملاء مع عملك.",
+        "ku": "تێبگە کڕیارەکان چۆن کارلێک لەگەڵ بزنسەکەت دەکەن."
+      }
+    }
+  ],
+  "BUSINESS_TYPE_ITEMS": [
+    {
+      "id": "restaurants",
+      "icon": "restaurant",
+      "name": {
+        "en": "Restaurants",
+        "ar": "المطاعم",
+        "ku": "چێشتخانەکان"
+      },
+      "desc": {
+        "en": "Menu, NFC, QR, ordering, table ordering, WhatsApp, reviews.",
+        "ar": "قائمة، NFC، QR، طلبات، طلب من الطاولة، واتساب، تقييمات.",
+        "ku": "مێنوو، NFC، QR، داواکاری، داواکاری مێز، واتساپ، هەڵسەنگاندن."
+      }
+    },
+    {
+      "id": "cafes",
+      "icon": "cafe",
+      "name": {
+        "en": "Cafés",
+        "ar": "المقاهي",
+        "ku": "کافێکان"
+      },
+      "desc": {
+        "en": "Digital menu, offers, Instagram, WhatsApp ordering.",
+        "ar": "قائمة رقمية، عروض، إنستغرام، طلب عبر واتساب.",
+        "ku": "مێنووی دیجیتاڵ، ئۆفەر، ئینستاگرام، داواکاری بە واتساپ."
+      }
+    },
+    {
+      "id": "hotels",
+      "icon": "hotel",
+      "name": {
+        "en": "Hotels",
+        "ar": "الفنادق",
+        "ku": "هۆتێلەکان"
+      },
+      "desc": {
+        "en": "Services, menus, reservations, WhatsApp, hotel information.",
+        "ar": "خدمات، قوائم، حجوزات، واتساب، معلومات الفندق.",
+        "ku": "خزمەتگوزاری، مێنوو، جێگیرکردن، واتساپ، زانیاری هۆتێل."
+      }
+    },
+    {
+      "id": "salons",
+      "icon": "salon",
+      "name": {
+        "en": "Salons",
+        "ar": "الصالونات",
+        "ku": "سالۆنەکان"
+      },
+      "desc": {
+        "en": "Services, booking, Instagram, WhatsApp, location.",
+        "ar": "خدمات، حجز، إنستغرام، واتساب، الموقع.",
+        "ku": "خزمەتگوزاری، بوکینگ، ئینستاگرام، واتساپ، شوێن."
+      }
+    },
+    {
+      "id": "retail",
+      "icon": "retail",
+      "name": {
+        "en": "Retail",
+        "ar": "المتاجر",
+        "ku": "فرۆشگاکان"
+      },
+      "desc": {
+        "en": "Products, social media, offers, location, contact.",
+        "ar": "منتجات، وسائل تواصل، عروض، موقع، تواصل.",
+        "ku": "بەرهەم، سۆشیال میدیا، ئۆفەر، شوێن، پەیوەندی."
+      }
+    },
+    {
+      "id": "clinics",
+      "icon": "clinic",
+      "name": {
+        "en": "Clinics",
+        "ar": "العيادات",
+        "ku": "کلینیکەکان"
+      },
+      "desc": {
+        "en": "Services, booking, location, WhatsApp, reviews.",
+        "ar": "خدمات، حجز، موقع، واتساب، تقييمات.",
+        "ku": "خزمەتگوزاری، بوکینگ، شوێن، واتساپ، هەڵسەنگاندن."
+      }
+    },
+    {
+      "id": "gyms",
+      "icon": "growth",
+      "name": {
+        "en": "Gyms",
+        "ar": "الصالات الرياضية",
+        "ku": "یانەی وەرزشی"
+      },
+      "desc": {
+        "en": "Membership info, classes, social media, location.",
+        "ar": "معلومات العضوية، الحصص، وسائل التواصل، الموقع.",
+        "ku": "زانیاری ئەندامێتی، پۆل، سۆشیال میدیا، شوێن."
+      }
+    },
+    {
+      "id": "services",
+      "icon": "briefcase",
+      "name": {
+        "en": "Services",
+        "ar": "الخدمات",
+        "ku": "خزمەتگوزارییەکان"
+      },
+      "desc": {
+        "en": "Portfolio, contact, booking, social proof.",
+        "ar": "أعمال سابقة، تواصل، حجز، إثبات اجتماعي.",
+        "ku": "کارە پێشووەکان، پەیوەندی، بوکینگ، بڕوانامەی کۆمەڵایەتی."
+      }
+    },
+    {
+      "id": "personal",
+      "icon": "users",
+      "name": {
+        "en": "Personal Brands",
+        "ar": "العلامات الشخصية",
+        "ku": "براندی کەسی"
+      },
+      "desc": {
+        "en": "Links, social media, contact, offers.",
+        "ar": "روابط، وسائل تواصل، تواصل، عروض.",
+        "ku": "لینک، سۆشیال میدیا، پەیوەندی، ئۆفەر."
+      }
+    },
+    {
+      "id": "more",
+      "icon": "more",
+      "name": {
+        "en": "Other Businesses",
+        "ar": "أعمال أخرى",
+        "ku": "بزنسی تر"
+      },
+      "desc": {
+        "en": "Any business, one digital experience.",
+        "ar": "أي عمل، تجربة رقمية واحدة.",
+        "ku": "هەر بزنسێک، یەک ئەزموونی دیجیتاڵ."
+      }
+    }
+  ],
+  "PLAN_ITEMS": [
+    {
+      "id": "vee_start",
+      "cta": {
+        "en": "Get Started",
+        "ar": "ابدأ الآن",
+        "ku": "دەست پێبکە"
+      },
+      "popular": false,
+      "name": {
+        "en": "Vee Start",
+        "ar": "Vee Start",
+        "ku": "Vee Start"
+      },
+      "setupPrice": 75000,
+      "monthlyPrice": 10000,
+      "tagline": {
+        "en": "For small businesses that need a professional digital presence.",
+        "ar": "للأعمال الصغيرة التي تحتاج حضورًا رقميًا احترافيًا.",
+        "ku": "بۆ بزنسی بچووک کە پێویستی بە بوونی دیجیتاڵی پیشەیی هەیە."
+      },
+      "features": {
+        "en": [
+          "Vee Business Profile",
+          "Digital Menu",
+          "NFC setup",
+          "QR Code",
+          "Business logo and information",
+          "Arabic / English / Kurdish",
+          "WhatsApp, Instagram, Maps, Reviews",
+          "Call button",
+          "Basic menu management",
+          "Basic analytics",
+          "Mobile-optimized profile",
+          "Vee hosting"
+        ],
+        "ar": [
+          "ملف Vee للأعمال",
+          "قائمة رقمية",
+          "إعداد NFC",
+          "رمز QR",
+          "شعار ومعلومات العمل",
+          "عربي / إنجليزي / كردي",
+          "واتساب وإنستغرام وخرائط وتقييمات",
+          "زر اتصال",
+          "إدارة أساسية للقائمة",
+          "تحليلات أساسية",
+          "ملف محسّن للهاتف",
+          "استضافة Vee"
+        ],
+        "ku": [
+          "پرۆفایلی بزنسی Vee",
+          "مێنووی دیجیتاڵ",
+          "ڕێکخستنی NFC",
+          "کۆدی QR",
+          "لۆگۆ و زانیاری بزنس",
+          "عەرەبی / ئینگلیزی / کوردی",
+          "واتساپ، ئینستاگرام، ماپس، هەڵسەنگاندن",
+          "دوگمەی پەیوەندی",
+          "بەڕێوەبردنی سەرەتایی مێنوو",
+          "شیکاری سەرەتایی",
+          "پرۆفایلی گونجاو بۆ مۆبایل",
+          "هۆستینگی Vee"
+        ]
+      }
+    },
+    {
+      "id": "vee_business",
+      "cta": {
+        "en": "Choose Business",
+        "ar": "اختر Business",
+        "ku": "Business هەڵبژێرە"
+      },
+      "popular": true,
+      "name": {
+        "en": "Vee Business",
+        "ar": "Vee Business",
+        "ku": "Vee Business"
+      },
+      "setupPrice": 150000,
+      "monthlyPrice": 20000,
+      "tagline": {
+        "en": "For restaurants, cafés and growing businesses.",
+        "ar": "للمطاعم والمقاهي والأعمال المتنامية.",
+        "ku": "بۆ چێشتخانە، کافێ و بزنسی گەشەسەندوو."
+      },
+      "features": {
+        "en": [
+          "Everything in Start, plus:",
+          "Advanced digital menu",
+          "Product images, descriptions & categories",
+          "Availability, featured & popular products",
+          "Offers & promotions",
+          "Add-ons & product options",
+          "WhatsApp ordering",
+          "Custom business links",
+          "Advanced analytics & interaction tracking",
+          "Customizable profile",
+          "Multiple languages",
+          "Priority support"
+        ],
+        "ar": [
+          "كل ما في Start، بالإضافة إلى:",
+          "قائمة رقمية متقدمة",
+          "صور ووصف وفئات للمنتجات",
+          "التوفر والمنتجات المميزة والرائجة",
+          "عروض وترويجات",
+          "إضافات وخيارات المنتجات",
+          "طلب عبر واتساب",
+          "روابط عمل مخصصة",
+          "تحليلات متقدمة وتتبع التفاعل",
+          "ملف قابل للتخصيص",
+          "لغات متعددة",
+          "دعم ذو أولوية"
+        ],
+        "ku": [
+          "هەموو ئەوەی لە Start، زیادی سەر:",
+          "مێنووی دیجیتاڵی پێشکەوتوو",
+          "وێنە، وەسف و بەشی بەرهەم",
+          "بەردەستبوون، بەرهەمی تایبەت و بەناوبانگ",
+          "ئۆفەر و پرۆمۆشن",
+          "زیادکراو و هەڵبژاردنی بەرهەم",
+          "داواکاری بە واتساپ",
+          "لینکی تایبەتی بزنس",
+          "شیکاری پێشکەوتوو و شوێنکەوتنی کارلێک",
+          "پرۆفایلی گۆڕاو",
+          "چەند زمانێک",
+          "پشتگیری ئەولەویەتدار"
+        ]
+      }
+    },
+    {
+      "id": "vee_pro",
+      "cta": {
+        "en": "Choose Pro",
+        "ar": "اختر Pro",
+        "ku": "Pro هەڵبژێرە"
+      },
+      "popular": false,
+      "name": {
+        "en": "Vee Pro",
+        "ar": "Vee Pro",
+        "ku": "Vee Pro"
+      },
+      "setupPrice": 300000,
+      "monthlyPrice": 40000,
+      "tagline": {
+        "en": "For businesses that want the complete Vee experience.",
+        "ar": "للأعمال التي تريد تجربة Vee الكاملة.",
+        "ku": "بۆ بزنسێک کە ئەزموونی تەواوی Vee دەوێت."
+      },
+      "features": {
+        "en": [
+          "Everything in Business, plus:",
+          "Online ordering",
+          "Table ordering (Table QR / NFC)",
+          "Multiple locations & multiple menus",
+          "Advanced analytics & customer behavior insights",
+          "Advanced promotions",
+          "Custom branding",
+          "Custom domain support",
+          "Multiple staff accounts & permissions",
+          "Priority support",
+          "Future Vee platform features"
+        ],
+        "ar": [
+          "كل ما في Business، بالإضافة إلى:",
+          "طلب أونلاين",
+          "طلب من الطاولة (QR / NFC للطاولة)",
+          "فروع وقوائم متعددة",
+          "تحليلات متقدمة ورؤى سلوك العملاء",
+          "ترويجات متقدمة",
+          "علامة تجارية مخصصة",
+          "دعم نطاق مخصص",
+          "حسابات موظفين متعددة وصلاحيات",
+          "دعم ذو أولوية",
+          "ميزات Vee المستقبلية"
+        ],
+        "ku": [
+          "هەموو ئەوەی لە Business، زیادی سەر:",
+          "داواکاری ئۆنلاین",
+          "داواکاری مێز (QR / NFC ی مێز)",
+          "چەند لق و چەند مێنوو",
+          "شیکاری پێشکەوتوو و تێگەیشتنی ڕەفتاری کڕیار",
+          "پرۆمۆشنی پێشکەوتوو",
+          "براندی تایبەت",
+          "پشتیوانی دۆمەینی تایبەت",
+          "چەند هەژماری کارمەند و مۆڵەت",
+          "پشتگیری ئەولەویەتدار",
+          "تایبەتمەندییە داهاتووەکانی Vee"
+        ]
+      }
+    },
+    {
+      "id": "vee_custom",
+      "cta": {
+        "en": "Talk to Vee",
+        "ar": "تحدث مع Vee",
+        "ku": "لەگەڵ Vee قسە بکە"
+      },
+      "popular": false,
+      "contact": true,
+      "name": {
+        "en": "Vee Custom",
+        "ar": "Vee Custom",
+        "ku": "Vee Custom"
+      },
+      "setupPrice": null,
+      "monthlyPrice": null,
+      "tagline": {
+        "en": "Built around your business — hotels, restaurant groups, large cafés, retail companies, salons, clinics, multiple branches and corporate businesses.",
+        "ar": "مصممة حول عملك — فنادق، مجموعات مطاعم، مقاهي كبيرة، شركات تجزئة، صالونات، عيادات، فروع متعددة وشركات.",
+        "ku": "لەسەر بنەمای بزنسەکەت دروستکراوە — هۆتێل، گرووپی چێشتخانە، کافێی گەورە، کۆمپانیای فرۆشگا، سالۆن، کلینیک، چەند لق و بزنسی کۆمپانی."
+      },
+      "features": {
+        "en": [
+          "Multiple branches",
+          "Custom digital experience",
+          "Custom domain",
+          "Advanced integrations & API",
+          "Custom ordering system",
+          "Custom dashboard",
+          "Custom branding",
+          "Dedicated support",
+          "Enterprise analytics"
+        ],
+        "ar": [
+          "فروع متعددة",
+          "تجربة رقمية مخصصة",
+          "نطاق مخصص",
+          "تكاملات متقدمة وAPI",
+          "نظام طلبات مخصص",
+          "لوحة تحكم مخصصة",
+          "علامة تجارية مخصصة",
+          "دعم مخصص",
+          "تحليلات للمؤسسات"
+        ],
+        "ku": [
+          "چەند لق",
+          "ئەزموونی دیجیتاڵی تایبەت",
+          "دۆمەینی تایبەت",
+          "یەکخستنی پێشکەوتوو و API",
+          "سیستەمی داواکاری تایبەت",
+          "داشبۆردی تایبەت",
+          "براندی تایبەت",
+          "پشتگیری تایبەتمەند",
+          "شیکاری کۆمپانی"
+        ]
+      }
+    }
+  ],
+  "COMPARE_ROWS": [
+    {
+      "key": "profile",
+      "label": {
+        "en": "Business Profile",
+        "ar": "ملف العمل",
+        "ku": "پرۆفایلی بزنس"
+      },
+      "vals": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "menu",
+      "label": {
+        "en": "Digital Menu",
+        "ar": "قائمة رقمية",
+        "ku": "مێنووی دیجیتاڵ"
+      },
+      "vals": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "nfc",
+      "label": {
+        "en": "NFC",
+        "ar": "NFC",
+        "ku": "NFC"
+      },
+      "vals": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "qr",
+      "label": {
+        "en": "QR Code",
+        "ar": "رمز QR",
+        "ku": "کۆدی QR"
+      },
+      "vals": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "lang3",
+      "label": {
+        "en": "Arabic / English / Kurdish",
+        "ar": "عربي / إنجليزي / كردي",
+        "ku": "عەرەبی / ئینگلیزی / کوردی"
+      },
+      "vals": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "whatsapp",
+      "label": {
+        "en": "WhatsApp",
+        "ar": "واتساب",
+        "ku": "واتساپ"
+      },
+      "vals": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "instagram",
+      "label": {
+        "en": "Instagram",
+        "ar": "إنستغرام",
+        "ku": "ئینستاگرام"
+      },
+      "vals": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "maps",
+      "label": {
+        "en": "Google Maps",
+        "ar": "خرائط جوجل",
+        "ku": "گووگڵ ماپس"
+      },
+      "vals": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "reviews",
+      "label": {
+        "en": "Google Reviews",
+        "ar": "تقييمات جوجل",
+        "ku": "هەڵسەنگاندنی گووگڵ"
+      },
+      "vals": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "analyticsBasic",
+      "label": {
+        "en": "Basic Analytics",
+        "ar": "تحليلات أساسية",
+        "ku": "شیکاری سەرەتایی"
+      },
+      "vals": [
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "analyticsAdv",
+      "label": {
+        "en": "Advanced Analytics",
+        "ar": "تحليلات متقدمة",
+        "ku": "شیکاری پێشکەوتوو"
+      },
+      "vals": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "waOrdering",
+      "label": {
+        "en": "WhatsApp Ordering",
+        "ar": "طلب عبر واتساب",
+        "ku": "داواکاری بە واتساپ"
+      },
+      "vals": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "offers",
+      "label": {
+        "en": "Offers",
+        "ar": "عروض",
+        "ku": "ئۆفەر"
+      },
+      "vals": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "productOptions",
+      "label": {
+        "en": "Product Options",
+        "ar": "خيارات المنتج",
+        "ku": "هەڵبژاردنی بەرهەم"
+      },
+      "vals": [
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "onlineOrdering",
+      "label": {
+        "en": "Online Ordering",
+        "ar": "طلب أونلاين",
+        "ku": "داواکاری ئۆنلاین"
+      },
+      "vals": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "tableOrdering",
+      "label": {
+        "en": "Table Ordering",
+        "ar": "طلب من الطاولة",
+        "ku": "داواکاری مێز"
+      },
+      "vals": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "multiLocation",
+      "label": {
+        "en": "Multiple Locations",
+        "ar": "فروع متعددة",
+        "ku": "چەند لق"
+      },
+      "vals": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "customBranding",
+      "label": {
+        "en": "Custom Branding",
+        "ar": "علامة تجارية مخصصة",
+        "ku": "براندی تایبەت"
+      },
+      "vals": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "key": "customIntegrations",
+      "label": {
+        "en": "Custom Integrations",
+        "ar": "تكاملات مخصصة",
+        "ku": "یەکخستنی تایبەت"
+      },
+      "vals": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "key": "dedicatedSupport",
+      "label": {
+        "en": "Dedicated Support",
+        "ar": "دعم مخصص",
+        "ku": "پشتگیری تایبەتمەند"
+      },
+      "vals": [
+        0,
+        0,
+        1,
+        1
+      ]
+    }
+  ],
+  "FAQ_ITEMS": [
+    {
+      "q": {
+        "en": "What is Vee?",
+        "ar": "ما هي Vee؟",
+        "ku": "Vee چییە؟"
+      },
+      "a": {
+        "en": "Vee is a digital customer-experience platform for businesses in Iraq. A physical NFC/QR product connects customers to your Vee business profile — your menu, ordering, WhatsApp, Instagram, reviews, location and offers, all in one place.",
+        "ar": "Vee منصة رقمية لتجربة العملاء للأعمال في العراق. يربط منتج NFC/QR المادي عملاءك بملف عملك على Vee — قائمتك وطلباتك وواتساب وإنستغرام وتقييماتك وموقعك وعروضك، كلها في مكان واحد.",
+        "ku": "Vee پلاتفۆرمێکی دیجیتاڵی ئەزموونی کڕیارە بۆ بزنسەکان لە عێراق. بەرهەمێکی جەستەیی NFC/QR کڕیارەکانت بە پرۆفایلی بزنسی Veeت دەبەستێتەوە — مێنوو، داواکاری، واتساپ، ئینستاگرام، هەڵسەنگاندن، شوێن و ئۆفەرەکانت، هەموو لە یەک شوێن."
+      }
+    },
+    {
+      "q": {
+        "en": "How does Vee NFC work?",
+        "ar": "كيف يعمل NFC في Vee؟",
+        "ku": "NFCی Vee چۆن کاردەکات؟"
+      },
+      "a": {
+        "en": "A customer taps their phone on the Vee product. Their phone opens your Vee business profile instantly, in their browser — no app needed.",
+        "ar": "يلمس العميل هاتفه على منتج Vee. يفتح هاتفه ملف عملك على Vee فورًا في المتصفح — دون الحاجة لأي تطبيق.",
+        "ku": "کڕیار مۆبایلەکەی لەسەر بەرهەمی Vee دادەنێت. مۆبایلەکەی دەستبەجێ پرۆفایلی بزنسی Veeت لە وێبگەڕدا دەکاتەوە — بێ پێویستی بە هیچ ئەپێک."
+      }
+    },
+    {
+      "q": {
+        "en": "Does NFC work on every phone?",
+        "ar": "هل يعمل NFC على كل الهواتف؟",
+        "ku": "ئایا NFC لەسەر هەموو مۆبایلێک کاردەکات؟"
+      },
+      "a": {
+        "en": "Most modern smartphones support NFC. For the few that don't, every Vee product also carries a QR code as a backup — same result, one extra second.",
+        "ar": "تدعم معظم الهواتف الذكية الحديثة NFC. بالنسبة للقلة التي لا تدعمه، يحمل كل منتج Vee أيضًا رمز QR احتياطي — نفس النتيجة، بثانية إضافية واحدة فقط.",
+        "ku": "زۆربەی مۆبایلە زیرەکە نوێیەکان پشتیوانی NFC دەکەن. بۆ ئەوانەی پشتیوانی ناکەن، هەر بەرهەمێکی Vee کۆدی QR ی پاڵپشتیشی هەیە — هەمان ئەنجام، بە یەک چرکەی زیادە."
+      }
+    },
+    {
+      "q": {
+        "en": "Can I change my menu after receiving the NFC product?",
+        "ar": "هل يمكنني تغيير قائمتي بعد استلام منتج NFC؟",
+        "ku": "دەتوانم مێنووەکەم بگۆڕم دوای وەرگرتنی بەرهەمی NFC؟"
+      },
+      "a": {
+        "en": "Yes. The NFC/QR always points to your Vee business profile, not directly to a fixed menu — so you can update your menu, links or offers anytime without ever replacing the physical product.",
+        "ar": "نعم. يشير NFC/QR دائمًا إلى ملف عملك على Vee، وليس مباشرة إلى قائمة ثابتة — لذا يمكنك تحديث قائمتك أو روابطك أو عروضك في أي وقت دون استبدال المنتج المادي أبدًا.",
+        "ku": "بەڵێ. NFC/QR هەمیشە ئاماژە بە پرۆفایلی بزنسی Veeت دەکات، نەک ڕاستەوخۆ بۆ مێنوویەکی جێگیر — بۆیە دەتوانیت مێنوو، لینک یان ئۆفەرەکانت لە هەر کاتێک نوێ بکەیتەوە بێ ئەوەی بەرهەمە جەستەییەکە بگۆڕیت."
+      }
+    },
+    {
+      "q": {
+        "en": "Can I change my Instagram or WhatsApp later?",
+        "ar": "هل يمكنني تغيير إنستغرام أو واتساب لاحقًا؟",
+        "ku": "دەتوانم دواتر ئینستاگرام یان واتسابم بگۆڕم؟"
+      },
+      "a": {
+        "en": "Yes — every link on your profile can be edited, reordered or disabled anytime from your Vee dashboard.",
+        "ar": "نعم — يمكن تعديل أي رابط في ملفك أو إعادة ترتيبه أو تعطيله في أي وقت من لوحة تحكم Vee.",
+        "ku": "بەڵێ — هەر لینکێک لە پرۆفایلەکەت دەتوانرێت لە هەر کاتێک لە داشبۆردی Veeوە دەستکاری بکرێت، ڕیز بکرێتەوە یان ناچالاک بکرێت."
+      }
+    },
+    {
+      "q": {
+        "en": "Do I need an app?",
+        "ar": "هل أحتاج إلى تطبيق؟",
+        "ku": "ئایا پێویستم بە ئەپ هەیە؟"
+      },
+      "a": {
+        "en": "No. Customers access Vee entirely through their browser — no download, no install.",
+        "ar": "لا. يصل العملاء إلى Vee بالكامل عبر المتصفح — بلا تنزيل وبلا تثبيت.",
+        "ku": "نەخێر. کڕیارەکان بە تەواوی لە ڕێگەی وێبگەڕەوە دەگەنە Vee — بێ داگرتن و بێ دامەزراندن."
+      }
+    },
+    {
+      "q": {
+        "en": "Can I use Vee for more than a restaurant?",
+        "ar": "هل يمكنني استخدام Vee لغير المطاعم؟",
+        "ku": "دەتوانم Vee بۆ زیاتر لە چێشتخانە بەکاربهێنم؟"
+      },
+      "a": {
+        "en": "Yes — salons, hotels, retail, clinics, gyms, services and personal brands all use Vee the same way.",
+        "ar": "نعم — الصالونات والفنادق والمتاجر والعيادات والصالات الرياضية والخدمات والعلامات الشخصية كلها تستخدم Vee بنفس الطريقة.",
+        "ku": "بەڵێ — سالۆن، هۆتێل، فرۆشگا، کلینیک، یانەی وەرزشی، خزمەتگوزاری و براندی کەسی هەموویان بە هەمان شێوە Vee بەکاردەهێنن."
+      }
+    },
+    {
+      "q": {
+        "en": "Can I have multiple branches?",
+        "ar": "هل يمكنني إضافة فروع متعددة؟",
+        "ku": "دەتوانم چەند لقم هەبێت؟"
+      },
+      "a": {
+        "en": "Depending on your plan. Vee Pro and Vee Custom support multiple locations and multiple menus.",
+        "ar": "بحسب خطتك. تدعم خطتا Vee Pro وVee Custom الفروع والقوائم المتعددة.",
+        "ku": "بەپێی پلانەکەت. Vee Pro و Vee Custom پشتیوانی چەند لق و چەند مێنوو دەکەن."
+      }
+    },
+    {
+      "q": {
+        "en": "Can customers order through Vee?",
+        "ar": "هل يمكن للعملاء الطلب عبر Vee؟",
+        "ku": "ئایا کڕیاران دەتوانن لە ڕێگەی Veeوە داوا بکەن؟"
+      },
+      "a": {
+        "en": "Depending on the ordering mode and plan you choose: menu-only, WhatsApp ordering, online ordering or table ordering.",
+        "ar": "بحسب وضع الطلب والخطة التي تختارها: تصفح القائمة فقط، الطلب عبر واتساب، الطلب أونلاين، أو الطلب من الطاولة.",
+        "ku": "بەپێی دۆخی داواکاری و پلانەکەی هەڵدەبژێریت: تەنها مێنوو، داواکاری بە واتساپ، داواکاری ئۆنلاین یان داواکاری مێز."
+      }
+    },
+    {
+      "q": {
+        "en": "Does Vee support Arabic and Kurdish?",
+        "ar": "هل تدعم Vee العربية والكردية؟",
+        "ku": "ئایا Vee پشتیوانی عەرەبی و کوردی دەکات؟"
+      },
+      "a": {
+        "en": "Yes — Vee fully supports English, Arabic and Kurdish, with correct right-to-left layout for Arabic and Kurdish.",
+        "ar": "نعم — تدعم Vee بالكامل الإنجليزية والعربية والكردية، مع تخطيط صحيح من اليمين لليسار للعربية والكردية.",
+        "ku": "بەڵێ — Vee بە تەواوی پشتیوانی ئینگلیزی، عەرەبی و کوردی دەکات، لەگەڵ ڕیزبەندی ڕاست بۆ چەپی ڕاست بۆ عەرەبی و کوردی."
+      }
+    },
+    {
+      "q": {
+        "en": "How do I get started?",
+        "ar": "كيف أبدأ؟",
+        "ku": "چۆن دەست پێبکەم؟"
+      },
+      "a": {
+        "en": "Choose a plan above, or contact Vee directly — we'll set up your profile, menu and NFC/QR together.",
+        "ar": "اختر خطة أعلاه، أو تواصل مع Vee مباشرة — سنُعدّ ملفك وقائمتك وNFC/QR معًا.",
+        "ku": "پلانێک لە سەرەوە هەڵبژێرە، یان ڕاستەوخۆ پەیوەندی بە Veeوە بکە — پرۆفایل، مێنوو و NFC/QR ت پێکەوە ڕێکدەخەین."
+      }
+    }
+  ]
+}

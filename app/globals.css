@@ -1,26 +1,145 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Vee — Desert brand palette + design tokens
+   Ported 1:1 from the original static site's css/style.css so the visual
+   identity carries over exactly into the rebuilt platform.
+   ========================================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --canyon: #7a3a28;
+  --camel: #c39a6b;
+  --gold: #e0c08a;
+  --cream: #efe0c4;
+  --olive: #6e7f5b;
+
+  --ink: #241f1b;
+  --ink-soft: #2e2822;
+  --ink-2: #3a332b;
+  --paper: #fcfaf5;
+  --fog: #f5ebda;
+  --fog-2: #efe0c4;
+  --line: #e4d7be;
+  --line-dark: #46392f;
+  --ink-muted: #756a5c;
+  --paper-muted: #cdb99b;
+
+  --accent: #7a3a28;
+  --accent-2: #c39a6b;
+  --accent-3: #6e7f5b;
+  --accent-grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+  --accent-tint: rgba(122, 58, 40, 0.08);
+
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+
+  --shadow-sm: 0 2px 8px -2px rgba(36, 31, 27, 0.12);
+  --shadow-md: 0 10px 24px -10px rgba(36, 31, 27, 0.28);
+  --shadow-lg: 0 24px 48px -16px rgba(36, 31, 27, 0.36);
+
+  /* Success/warning/danger — chosen to stay AA-contrast on --paper and --ink-soft */
+  --success: #3f7a3a;
+  --success-bg: #e7f2e4;
+  --warning: #9a6a12;
+  --warning-bg: #faf0d9;
+  --danger: #b3261e;
+  --danger-bg: #fbe9e7;
+
+  --font-body: var(--font-ar);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
+
+html[lang="en"] { --font-body: var(--font-en); }
+html[lang="ku"] { --font-body: var(--font-ku); }
+html[lang="ar"] { --font-body: var(--font-ar); }
 
 @theme inline {
+  --color-canyon: var(--canyon);
+  --color-camel: var(--camel);
+  --color-gold: var(--gold);
+  --color-cream: var(--cream);
+  --color-olive: var(--olive);
+
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-2: var(--ink-2);
+  --color-paper: var(--paper);
+  --color-fog: var(--fog);
+  --color-fog-2: var(--fog-2);
+  --color-line: var(--line);
+  --color-line-dark: var(--line-dark);
+  --color-ink-muted: var(--ink-muted);
+  --color-paper-muted: var(--paper-muted);
+
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --radius-lg: var(--radius-lg);
+  --radius-md: var(--radius-md);
+  --radius-sm: var(--radius-sm);
+
+  --font-en: var(--font-en);
+  --font-ar: var(--font-ar);
+  --font-ku: var(--font-ku);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* { border-color: var(--line); }
+
+html {
+  color-scheme: light;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+}
+
+/* WCAG-AA visible focus state everywhere, incl. keyboard nav */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Kurdish typography: same size/weight/line-height as Arabic, only the
+   font family differs (Noto Sans Arabic, which has full Sorani glyph
+   coverage) — never a visibly different style from Arabic. */
+:lang(ar) { font-family: var(--font-ar); }
+:lang(ku) { font-family: var(--font-ku); }
+:lang(en) { font-family: var(--font-en); }
+
+[dir="rtl"] .flip-rtl { transform: scaleX(-1); }
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: -100px;
+  background: var(--ink);
+  color: #fff;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-sm);
+  z-index: 100;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (max-width: 400px) {
+  html { font-size: 15px; }
 }

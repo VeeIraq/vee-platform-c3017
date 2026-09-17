@@ -1,0 +1,33 @@
+<!--
+  Vee original product artwork — Steel NFC Stand.
+  House-style vector illustration (matches acrylic-stand / flat-tag / tissue-box),
+  in a brushed-steel palette with a weighted base to distinguish the material.
+-->
+<svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="steelTitle">
+  <title id="steelTitle">Brushed steel NFC table stand mockup with weighted base</title>
+  <defs>
+    <linearGradient id="ag9" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7A3A28"/>
+      <stop offset="1" stop-color="#C39A6B"/>
+    </linearGradient>
+    <linearGradient id="ag9b" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E3E6E9"/>
+      <stop offset="1" stop-color="#B9BEC4"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="200" cy="336" rx="120" ry="14" fill="#EFE4D2"/>
+  <!-- weighted steel base -->
+  <rect x="150" y="312" width="100" height="16" rx="8" fill="url(#ag9b)" stroke="#8B9096" stroke-width="1.5"/>
+  <rect x="192" y="284" width="16" height="34" fill="url(#ag9b)" stroke="#8B9096" stroke-width="1"/>
+  <!-- card body -->
+  <rect x="130" y="120" width="140" height="180" rx="16" fill="#FCFAF5" stroke="#8B9096" stroke-width="2"/>
+  <rect x="150" y="144" width="100" height="98" rx="12" fill="#F5EBDA"/>
+  <path d="M172 178h56M172 194h56M172 210h34" stroke="#A99A82" stroke-width="4" stroke-linecap="round"/>
+  <rect x="150" y="256" width="100" height="26" rx="8" fill="#241F1B"/>
+  <text x="200" y="273" font-family="Arial, sans-serif" font-size="12" fill="#FCFAF5" text-anchor="middle" letter-spacing="1.5">VEE 12</text>
+  <g transform="translate(200,146)">
+    <circle r="22" fill="url(#ag9)"/>
+    <path d="M-7 -7h14v14h-14z" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M-2 -3c1.6 1.6 1.6 4.4 0 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  </g>
+</svg>

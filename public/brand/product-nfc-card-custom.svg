@@ -1,0 +1,24 @@
+<!--
+  Vee original product artwork — Custom NFC Card.
+  House-style vector illustration (matches acrylic-stand / flat-tag / tissue-box).
+-->
+<svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nfcCustomTitle">
+  <title id="nfcCustomTitle">Custom Vee NFC card mockup</title>
+  <defs>
+    <linearGradient id="ag5" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7A3A28"/>
+      <stop offset="1" stop-color="#C39A6B"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="200" cy="300" rx="130" ry="16" fill="#EFE4D2"/>
+  <rect x="80" y="150" width="240" height="150" rx="16" fill="#FCFAF5" stroke="#E4D7BE" stroke-width="2"/>
+  <rect x="104" y="174" width="34" height="24" rx="4" fill="url(#ag5)"/>
+  <path d="M124 250h150M124 266h110" stroke="#A99A82" stroke-width="4" stroke-linecap="round"/>
+  <text x="104" y="226" font-family="Arial, sans-serif" font-size="18" fill="#7A3A28" text-anchor="start" letter-spacing="1.5" font-weight="bold">VEE</text>
+  <g transform="translate(280,186)">
+    <circle r="20" fill="url(#ag5)"/>
+    <path d="M-6 -6h12v12h-12z" fill="none" stroke="#fff" stroke-width="2"/>
+    <path d="M-1.5 -2.5c1.4 1.4 1.4 3.6 0 5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <text x="200" y="332" font-family="Arial, sans-serif" font-size="11" fill="#8A7B68" text-anchor="middle" letter-spacing="2">YOUR LOGO HERE</text>
+</svg>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { logout } from "@/lib/actions/auth";
+import { LanguageSwitcher } from "@/components/public/language-switcher";
 
 const NAV = [
   { href: "/admin", label: "Overview", icon: "🛠️", superAdminOnly: false },
@@ -87,7 +88,8 @@ export function AdminShell({
           </div>
         </Link>
         {nav}
-        <div className="mt-auto pt-4">
+        <div className="mt-auto flex flex-col gap-2 pt-4">
+          <LanguageSwitcher />
           <p className="px-3 text-xs text-paper-muted">Signed in as {staffName}</p>
           <form action={logout}>
             <button type="submit" className="mt-2 min-h-11 w-full rounded-[var(--radius-sm)] px-3 py-2.5 text-start text-sm font-semibold text-paper-muted hover:bg-ink">

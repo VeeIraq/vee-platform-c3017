@@ -9,6 +9,7 @@ import { getCatalogueProducts, getPlans, getHomepageSections, getFaqItems, getHo
 import { getCurrentUser } from "@/lib/auth/dal";
 import { buttonClass } from "@/components/ui/button";
 import { Reveal } from "@/components/public/reveal";
+import { HashScrollOnMount } from "@/components/public/hash-scroll-on-mount";
 import { FaqAccordion } from "@/components/public/faq-accordion";
 import { DigitalMenuSection } from "@/components/public/digital-menu-section";
 import { BusinessTypesSection } from "@/components/public/business-types-section";
@@ -53,9 +54,11 @@ export default async function HomePage({
   // show/hide + order.
   const sectionNodes: Record<string, ReactNode> = {
     hero: (
-      <section key="hero" className="relative overflow-hidden bg-ink px-4 py-20 text-white sm:px-6 sm:py-28">
+      <section key="hero" className="relative flex min-h-[85vh] items-center overflow-hidden bg-ink px-4 py-20 text-white sm:px-6 sm:py-28">
         <div className="mx-auto max-w-3xl text-center">
-          <Image src="/brand/vee-logo-white.png" alt="Vee" width={112} height={38} priority className="mx-auto mb-4" />
+          {/* No wordmark here on purpose -- the sticky nav directly above
+              already shows the Vee logo, so repeating it right below made
+              the very top of the page feel cluttered. */}
           <h1 className="text-balance text-4xl font-extrabold leading-tight sm:text-5xl">{tt("hero.title")}</h1>
           <p className="mt-4 text-lg font-semibold text-paper-muted">{tt("hero.tagline")}</p>
           <p className="mx-auto mt-4 max-w-xl text-paper-muted">{tt("hero.desc")}</p>
@@ -79,7 +82,7 @@ export default async function HomePage({
     ),
 
     explain: (
-      <section key="explain" className="px-4 py-16 sm:px-6 sm:py-20">
+      <section key="explain" className="px-4 py-20 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-5xl">
           <p className="eyebrow mb-2 text-sm font-bold uppercase tracking-widest text-accent-3">{tt("explain.eyebrow")}</p>
           <h2 className="max-w-xl text-3xl font-extrabold text-ink">{tt("explain.title")}</h2>
@@ -114,12 +117,12 @@ export default async function HomePage({
           tt("menuTeaser.journeyReview"),
         ]}
         cta={tt("menuTeaser.cta")}
-        demoHref="/products"
+        demoHref="/demo-menu"
       />
     ),
 
     why: (
-      <section key="why" className="bg-fog px-4 py-16 sm:px-6 sm:py-20">
+      <section key="why" className="bg-fog px-4 py-20 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-5xl">
           <p className="mb-2 text-sm font-bold uppercase tracking-widest text-accent-3">{tt("why.eyebrow")}</p>
           <h2 className="max-w-xl text-3xl font-extrabold text-ink">{tt("why.title")}</h2>
@@ -145,7 +148,7 @@ export default async function HomePage({
     ),
 
     products: (
-      <section key="products" className="px-4 py-16 sm:px-6 sm:py-20">
+      <section key="products" className="px-4 py-20 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-5xl">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -189,7 +192,7 @@ export default async function HomePage({
     ),
 
     how: (
-      <section key="how" id="how" className="bg-fog px-4 py-16 sm:px-6 sm:py-20">
+      <section key="how" id="how" className="scroll-mt-20 bg-fog px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-5xl">
           <p className="mb-2 text-sm font-bold uppercase tracking-widest text-accent-3">{tt("how.eyebrow")}</p>
           <h2 className="max-w-xl text-3xl font-extrabold text-ink">{tt("how.title")}</h2>
@@ -209,7 +212,7 @@ export default async function HomePage({
     ),
 
     plans: (
-      <section key="plans" id="plans" className="px-4 py-16 sm:px-6 sm:py-20">
+      <section key="plans" id="plans" className="scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
         <div className="mx-auto max-w-5xl">
           <p className="mb-2 text-sm font-bold uppercase tracking-widest text-accent-3">{tt("plans.eyebrow")}</p>
           <h2 className="max-w-xl text-3xl font-extrabold text-ink">{tt("plans.title")}</h2>
@@ -282,7 +285,7 @@ export default async function HomePage({
     ),
 
     faq: (
-      <section key="faq" className="bg-fog px-4 py-16 sm:px-6 sm:py-20">
+      <section key="faq" className="bg-fog px-4 py-20 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-3xl">
           <p className="mb-2 text-sm font-bold uppercase tracking-widest text-accent-3">{tt("faq.eyebrow")}</p>
           <h2 className="text-3xl font-extrabold text-ink">{tt("faq.title")}</h2>
@@ -298,7 +301,7 @@ export default async function HomePage({
     ),
 
     contact: (
-      <section key="contact" className="px-4 py-16 sm:px-6 sm:py-20">
+      <section key="contact" className="px-4 py-20 sm:px-6 sm:py-24">
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-[var(--radius-lg)] bg-ink px-6 py-14 text-center text-white">
           <h2 className="text-3xl font-extrabold">{tt("contact.title")}</h2>
           <p className="max-w-md text-paper-muted">{tt("contact.sub")}</p>
@@ -324,5 +327,10 @@ export default async function HomePage({
       </div>
     ));
 
-  return <>{orderedSections}</>;
+  return (
+    <>
+      <HashScrollOnMount />
+      {orderedSections}
+    </>
+  );
 }

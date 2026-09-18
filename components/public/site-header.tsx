@@ -19,11 +19,31 @@ export function SiteHeader({ navItems = [] }: { navItems?: NavItem[] }) {
   // "Home" while already on the homepage -- scrolled down -- silently did
   // nothing. Scroll to top ourselves in that one case instead; every other
   // path still gets a normal Link navigation to "/".
+  //
+  // "How It Works" / "Plans" point at same-page anchors ("/#how", "/#plans").
+  // Next's App Router only auto-scrolls a hash target on an actual
+  // navigation, and next-view-transitions' custom transition intercepts the
+  // click before that native handling ever runs, so it silently did
+  // nothing while already on "/" too -- do the scroll ourselves, with an
+  // offset for the sticky header so the section title doesn't land hidden
+  // underneath it.
   function goHome(e: MouseEvent, href: string) {
     if (href === "/" && pathname === "/") {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
     }
+    const hashIndex = href.indexOf("#");
+    if (hashIndex === -1) return;
+    const targetPath = href.slice(0, hashIndex) || "/";
+    const id = href.slice(hashIndex + 1);
+    if (targetPath !== pathname) return; // different page -- let the real navigation carry the hash over
+    const el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    const headerOffset = 72;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+    window.scrollTo({ top, behavior: "smooth" });
   }
 
   // Falls back to the hardcoded, translation-driven list only when Super

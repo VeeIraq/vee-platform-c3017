@@ -9,8 +9,15 @@ import { getCatalogueProductBySku } from "@/lib/data/public";
 import { isFeatureEnabled } from "@/lib/data/feature-flags";
 import { buttonClass } from "@/components/ui/button";
 import { COMPANY_WHATSAPP_NUMBER } from "@/lib/company";
+import type { Locale } from "@/lib/i18n/config";
 
 type Params = { slug: string };
+
+const WA_MESSAGE: Record<Locale, (name: string) => string> = {
+  en: (name) => `Hello Vee, I'm interested in the ${name}.`,
+  ar: (name) => `مرحباً Vee، أنا مهتم بـ ${name}.`,
+  ku: (name) => `سڵاو Vee، من پێویستم بە ${name} هەیە.`,
+};
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { slug } = await params;
@@ -32,7 +39,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
   const product = await getCatalogueProductBySku(slug.toUpperCase());
   if (!product) notFound();
 
-  const waMessage = encodeURIComponent(`Hello Vee, I'm interested in the ${pick(product.name, locale)}.`);
+  const waMessage = encodeURIComponent(WA_MESSAGE[locale](pick(product.name, locale)));
+  // catalogue_products.features/specifications are seeded as locale-keyed
+  // objects ({en:[...], ar:[...], ku:[...]}), not flat arrays -- picking the
+  // current locale here (falling back to English) instead of an
+  // Array.isArray check, which always failed on the real shape and hid this
+  // list in every language.
+  const featureList = ((product.features as unknown as Partial<Record<Locale, string[]>>) ?? {})[locale]
+    ?? (product.features as unknown as Partial<Record<Locale, string[]>>)?.en
+    ?? [];
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
@@ -68,7 +83,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
               )}
             </p>
           ) : (
-            <p className="mt-2 text-sm font-semibold text-accent">Contact us for pricing</p>
+            <p className="mt-2 text-sm font-semibold text-accent">{tt("products.contactForPricing")}</p>
           )}
 
           <p className="mt-3 text-ink-muted">{pick(product.description, locale)}</p>
@@ -86,13 +101,13 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
 
           {product.colors && product.colors.length > 0 && (
             <p className="mt-4 text-sm font-semibold text-ink-soft">
-              Available in: {product.colors.join(", ")}
+              {tt("products.availableIn")} {product.colors.join(", ")}
             </p>
           )}
 
-          {Array.isArray(product.features) && product.features.length > 0 && (
+          {featureList.length > 0 && (
             <ul className="mt-6 flex flex-col gap-2">
-              {(product.features as unknown as string[]).map((f, i) => (
+              {featureList.map((f, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-ink-soft">
                   <span aria-hidden="true" className="mt-0.5 text-accent-3">✓</span>
                   <span>{f}</span>
@@ -108,7 +123,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
               rel="noopener noreferrer"
               className={buttonClass("primary", "md")}
             >
-              {product.request_quote ? "Request a quote" : tt("products.cta")}
+              {product.request_quote ? tt("products.requestQuote") : tt("products.cta")}
             </a>
             <Link href="/contact" className={buttonClass("outline", "md")}>
               {tt("nav.contact")}

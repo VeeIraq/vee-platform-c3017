@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { Reveal } from "@/components/public/reveal";
 
@@ -28,6 +29,7 @@ export function AnalyticsStatsSection({
   return (
     <section className="bg-ink px-4 py-16 text-white sm:px-6 sm:py-20">
       <div className="mx-auto max-w-4xl text-center">
+        <Image src="/brand/vee-logo-white.png" alt="Vee" width={96} height={33} className="mx-auto mb-6" />
         <p className="mb-2 text-sm font-bold uppercase tracking-widest text-gold">{eyebrow}</p>
         <h2 className="mx-auto max-w-2xl text-3xl font-extrabold">{title}</h2>
         <p className="mx-auto mt-4 max-w-xl text-paper-muted">{desc}</p>

@@ -25,7 +25,7 @@
     "home": "Home",
     "solutions": "Solutions",
     "products": "Products",
-    "menu": "Digital Menu",
+    "menu": "Menu",
     "how": "How It Works",
     "plans": "Plans",
     "contact": "Contact",
@@ -78,7 +78,7 @@
     "desc": "Unlimited categories, rich product pages, sizes and add-ons, and an ordering experience that feels like a real restaurant platform — not a PDF. No app to download, nothing to install — customers reach it instantly.",
     "point1": "Search, filter and browse by category in seconds",
     "point2": "Photos, prices, discounts, tags and availability",
-    "point3": "WhatsApp, online or table ordering — your choice",
+    "point3": "Online, table or in-person ordering — your choice",
     "cta": "Browse the demo menu",
     "journeyTap": "Tap",
     "journeyOpen": "Open",
@@ -108,6 +108,9 @@
     "qrLabel": "QR backup",
     "qrExplain": "Every product also carries a QR code, so it works even on phones without NFC.",
     "cta": "View Product",
+    "contactForPricing": "Contact us for pricing",
+    "availableIn": "Available in:",
+    "requestQuote": "Request a quote",
     "items": {
       "acrylic": {
         "name": "Acrylic NFC Stand",
@@ -169,7 +172,7 @@
     "step3Title": "Connect NFC & QR",
     "step3Desc": "Place Vee NFC products and QR codes in your business.",
     "step4Title": "Customers tap and connect",
-    "step4Desc": "Customers instantly access your menu, ordering, social media, location, reviews and more."
+    "step4Desc": "Customers instantly access your menu, ordering, social media, location, reviews and more — every tap is tracked in your analytics."
   },
   "plans": {
     "eyebrow": "Plans & Pricing",
@@ -337,6 +340,12 @@
     "navStaff": "Staff",
     "navSubscription": "Subscription",
     "navSettings": "Settings",
+    "navReviews": "Reviews",
+    "signOut": "Sign out",
+    "viewProfile": "View profile",
+    "statusPublished": "Published",
+    "statusDraft": "Draft",
+    "switchBusiness": "Business",
     "welcome": "Welcome back",
     "overviewSub": "Here's how {business} is performing.",
     "viewAll": "View all",

@@ -171,7 +171,11 @@ export async function requestPasswordReset(_prevState: AuthFormState, formData: 
   }
   const supabase = await createClient();
   await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/reset-password/confirm`,
+    // Route through the /auth/confirm Route Handler, not straight to the
+    // confirm page -- only a Route Handler (or Server Action) can actually
+    // persist the session cookie Supabase hands back for this code. See
+    // app/auth/confirm/route.ts for why.
+    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/auth/confirm?next=${encodeURIComponent("/reset-password/confirm")}`,
   });
   // Always report success (regardless of whether the email exists) to avoid
   // leaking which emails have accounts.

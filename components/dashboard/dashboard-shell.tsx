@@ -8,19 +8,21 @@ import { logout } from "@/lib/actions/auth";
 import { setActiveBusiness } from "@/lib/actions/dashboard-context";
 import { pick } from "@/lib/i18n/pick";
 import type { Locale } from "@/lib/i18n/config";
+import { useLocale } from "@/components/i18n/locale-provider";
+import { LanguageSwitcher } from "@/components/public/language-switcher";
 
-type NavItem = { href: string; label: string; icon: string; flag?: keyof EnabledNav };
+type NavItem = { href: string; labelKey: string; icon: string; flag?: keyof EnabledNav };
 type EnabledNav = { menu: boolean; orders: boolean; analytics: boolean; links: boolean; reviews: boolean };
 
 const NAV: NavItem[] = [
-  { href: "/dashboard", label: "Overview", icon: "📊" },
-  { href: "/dashboard/profile", label: "Business profile", icon: "🏪" },
-  { href: "/dashboard/links", label: "Links", icon: "🔗", flag: "links" },
-  { href: "/dashboard/menu", label: "Menu", icon: "📋", flag: "menu" },
-  { href: "/dashboard/reviews", label: "Reviews", icon: "⭐", flag: "reviews" },
-  { href: "/dashboard/orders", label: "Orders", icon: "🧾", flag: "orders" },
-  { href: "/dashboard/analytics", label: "Analytics", icon: "📈", flag: "analytics" },
-  { href: "/dashboard/settings", label: "Settings", icon: "⚙️" },
+  { href: "/dashboard", labelKey: "navOverview", icon: "📊" },
+  { href: "/dashboard/profile", labelKey: "navProfile", icon: "🏪" },
+  { href: "/dashboard/links", labelKey: "navLinks", icon: "🔗", flag: "links" },
+  { href: "/dashboard/menu", labelKey: "navMenu", icon: "📋", flag: "menu" },
+  { href: "/dashboard/reviews", labelKey: "navReviews", icon: "⭐", flag: "reviews" },
+  { href: "/dashboard/orders", labelKey: "navOrders", icon: "🧾", flag: "orders" },
+  { href: "/dashboard/analytics", labelKey: "navAnalytics", icon: "📈", flag: "analytics" },
+  { href: "/dashboard/settings", labelKey: "navSettings", icon: "⚙️" },
 ];
 
 export function DashboardShell({
@@ -44,6 +46,8 @@ export function DashboardShell({
 }) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { t } = useLocale();
+  const dt = (key: string) => t(`dashboard.${key}`);
 
   const visibleNav = NAV.filter((item) => !item.flag || enabledNav[item.flag]);
 
@@ -61,7 +65,7 @@ export function DashboardShell({
             }`}
           >
             <span aria-hidden="true">{item.icon}</span>
-            {item.label}
+            {dt(item.labelKey)}
           </Link>
         );
       })}
@@ -80,7 +84,7 @@ export function DashboardShell({
           {memberships.length > 1 && (
             <form>
               <label htmlFor="business-switch" className="mb-1 block text-xs font-semibold text-ink-muted">
-                Business
+                {dt("switchBusiness")}
               </label>
               <select
                 id="business-switch"
@@ -101,9 +105,10 @@ export function DashboardShell({
               </select>
             </form>
           )}
+          <LanguageSwitcher />
           <form action={logout}>
             <button type="submit" className="min-h-11 w-full rounded-[var(--radius-sm)] px-3 py-2.5 text-start text-sm font-semibold text-ink-soft hover:bg-fog">
-              Sign out
+              {dt("signOut")}
             </button>
           </form>
         </div>
@@ -125,13 +130,16 @@ export function DashboardShell({
             <p className="text-xs text-ink-muted">
               vee.iq/{businessUsername} ·{" "}
               <span className={businessStatus === "published" ? "font-semibold text-success" : "font-semibold text-warning"}>
-                {businessStatus === "published" ? "Published" : "Draft"}
+                {businessStatus === "published" ? dt("statusPublished") : dt("statusDraft")}
               </span>
             </p>
           </div>
-          <Link href={`/${businessUsername}`} target="_blank" className="text-sm font-semibold text-accent hover:underline">
-            View profile ↗
-          </Link>
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <Link href={`/${businessUsername}`} target="_blank" className="text-sm font-semibold text-accent hover:underline">
+              {dt("viewProfile")} ↗
+            </Link>
+          </div>
         </header>
 
         {mobileOpen && (

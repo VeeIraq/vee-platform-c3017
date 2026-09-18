@@ -1,4 +1,4 @@
-import { Search, Tag, MessageCircle } from "lucide-react";
+import { Search, Tag, ListChecks, ShoppingBag } from "lucide-react";
 import { Reveal } from "@/components/public/reveal";
 
 /**
@@ -40,7 +40,7 @@ export function DigitalMenuSection({
             {[
               { Icon: Search, text: points[0] },
               { Icon: Tag, text: points[1] },
-              { Icon: MessageCircle, text: points[2] },
+              { Icon: ListChecks, text: points[2] },
             ].map(({ Icon, text }) => (
               <li key={text} className="flex items-start gap-3 text-sm text-ink-soft">
                 <Icon aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
@@ -126,13 +126,15 @@ function PhoneMockup() {
             ))}
             {/* Decorative only (illustrative demo menu, not a real order flow) --
                 a span styled like a button rather than an actual <button> so
-                it isn't announced as an interactive control with no action. */}
+                it isn't announced as an interactive control with no action.
+                Deliberately generic rather than naming one channel -- a
+                business can enable online, table or in-person ordering. */}
             <span
               aria-hidden="true"
               className="mt-1 flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 text-xs font-bold text-white [background:var(--accent-grad)]"
             >
-              <MessageCircle aria-hidden="true" className="h-4 w-4" />
-              Send order via WhatsApp
+              <ShoppingBag aria-hidden="true" className="h-4 w-4" />
+              Order & more
             </span>
           </div>
 

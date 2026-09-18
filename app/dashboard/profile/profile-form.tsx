@@ -22,16 +22,38 @@ type Business = {
   cover_image_url: string | null;
 };
 
-export function ProfileForm({ business }: { business: Business }) {
+export function ProfileForm({ business, imageUploadsEnabled = true }: { business: Business; imageUploadsEnabled?: boolean }) {
   const [state, action, pending] = useActionState<ActionState, FormData>(updateBusinessProfile, undefined);
   const [tab, setTab] = useState<"en" | "ar" | "ku">("en");
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <ImageUploadCard businessId={business.id} field="logo_url" label="Logo" currentUrl={business.logo_url} />
-        <ImageUploadCard businessId={business.id} field="cover_image_url" label="Cover image" currentUrl={business.cover_image_url} />
-      </div>
+      {imageUploadsEnabled ? (
+        <div className="grid gap-4 sm:grid-cols-2">
+          <ImageUploadCard businessId={business.id} field="logo_url" label="Logo" currentUrl={business.logo_url} />
+          <ImageUploadCard businessId={business.id} field="cover_image_url" label="Cover image" currentUrl={business.cover_image_url} />
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {(["Logo", "Cover image"] as const).map((label) => {
+            const url = label === "Logo" ? business.logo_url : business.cover_image_url;
+            return (
+              <div key={label} className="rounded-[var(--radius-md)] border border-line bg-paper p-4">
+                <p className="mb-2 text-sm font-bold text-ink">{label}</p>
+                {url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={url} alt="" className="mb-2 h-24 w-24 rounded-[var(--radius-sm)] border border-line object-cover" />
+                ) : (
+                  <div className="mb-2 flex h-24 w-24 items-center justify-center rounded-[var(--radius-sm)] border border-dashed border-line text-2xl">
+                    🖼️
+                  </div>
+                )}
+                <p className="text-xs text-ink-muted">Image uploads aren&apos;t included on your current plan.</p>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       <form action={action} className="flex flex-col gap-5 rounded-[var(--radius-lg)] border border-line bg-paper p-6">
         <input type="hidden" name="businessId" value={business.id} />

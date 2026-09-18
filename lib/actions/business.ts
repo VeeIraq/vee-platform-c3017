@@ -4,6 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requireBusinessMembership, requireUser } from "@/lib/auth/dal";
+import { isFeatureEnabled } from "@/lib/data/feature-flags";
 
 export type ActionState = { error?: string; success?: boolean } | undefined;
 
@@ -184,6 +185,16 @@ export async function uploadBusinessImage(_prevState: ActionState, formData: For
   }
 
   const supabase = await createClient();
+
+  // Server-side enforcement, not just a hidden button: even a direct form
+  // submission can't upload when Super Admin has turned image_uploads off
+  // for this business's plan/override. See lib/data/feature-flags.ts for
+  // the same precedence the dashboard UI checks to decide whether to show
+  // the upload control at all.
+  const { data: businessRow } = await supabase.from("businesses").select("plan_id").eq("id", parsed.data.businessId).single();
+  const imageUploadsOn = await isFeatureEnabled("image_uploads", { businessId: parsed.data.businessId, planId: businessRow?.plan_id ?? undefined });
+  if (!imageUploadsOn) return { error: "Image uploads aren't available on your current plan." };
+
   const folder = parsed.data.field === "logo_url" ? "logo" : "cover";
   const ext = file.name.split(".").pop() ?? "png";
   const path = `${parsed.data.businessId}/${folder}/${Date.now()}.${ext}`;

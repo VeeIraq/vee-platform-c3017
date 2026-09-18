@@ -48,6 +48,7 @@ export function MenuManager({
   items,
   locale,
   likesEnabled,
+  imageUploadsEnabled = true,
   labelCatalogue,
 }: {
   businessId: string;
@@ -55,6 +56,7 @@ export function MenuManager({
   items: Item[];
   locale: Locale;
   likesEnabled: boolean;
+  imageUploadsEnabled?: boolean;
   labelCatalogue: MenuLabel[];
 }) {
   const [, startTransition] = useTransition();
@@ -121,7 +123,7 @@ export function MenuManager({
                 .map((item) => (
                   <li key={item.id} className="flex flex-col gap-3 rounded-[var(--radius-md)] border border-line bg-paper p-4">
                     <div className="flex items-start gap-3">
-                      <ItemImage businessId={businessId} itemId={item.id} imageUrl={item.image_url} />
+                      <ItemImage businessId={businessId} itemId={item.id} imageUrl={item.image_url} uploadsEnabled={imageUploadsEnabled} />
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between gap-2">
                           <p className="font-bold text-ink">{pick(item.name, locale)}</p>
@@ -379,8 +381,33 @@ function ItemLabelsEditor({
   );
 }
 
-function ItemImage({ businessId, itemId, imageUrl }: { businessId: string; itemId: string; imageUrl: string | null }) {
+function ItemImage({
+  businessId,
+  itemId,
+  imageUrl,
+  uploadsEnabled,
+}: {
+  businessId: string;
+  itemId: string;
+  imageUrl: string | null;
+  uploadsEnabled: boolean;
+}) {
   const [state, action, pending] = useActionState<ActionState, FormData>(uploadMenuItemImage, undefined);
+
+  if (!uploadsEnabled) {
+    return (
+      <div className="flex shrink-0 flex-col items-center gap-1">
+        {imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={imageUrl} alt="" className="h-16 w-16 rounded-[var(--radius-sm)] border border-line object-cover" />
+        ) : (
+          <span className="flex h-16 w-16 items-center justify-center rounded-[var(--radius-sm)] border border-dashed border-line text-xl">🍽️</span>
+        )}
+        <span className="max-w-16 text-center text-[10px] text-ink-muted">Not on your plan</span>
+      </div>
+    );
+  }
+
   return (
     <form action={action} className="flex shrink-0 flex-col items-center gap-1">
       <input type="hidden" name="businessId" value={businessId} />

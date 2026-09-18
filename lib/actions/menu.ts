@@ -4,6 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requireBusinessMembership } from "@/lib/auth/dal";
+import { isFeatureEnabled } from "@/lib/data/feature-flags";
 import type { ActionState } from "./business";
 export type { ActionState };
 
@@ -369,6 +370,13 @@ export async function uploadMenuItemImage(_prevState: ActionState, formData: For
   }
 
   const supabase = await createClient();
+
+  // Same server-side enforcement as uploadBusinessImage in ./business.ts --
+  // don't trust that the upload control was hidden client-side.
+  const { data: businessRow } = await supabase.from("businesses").select("plan_id").eq("id", businessId).single();
+  const imageUploadsOn = await isFeatureEnabled("image_uploads", { businessId, planId: businessRow?.plan_id ?? undefined });
+  if (!imageUploadsOn) return { error: "Image uploads aren't available on your current plan." };
+
   const ext = file.name.split(".").pop() ?? "jpg";
   const path = `${businessId}/menu/${itemId}-${Date.now()}.${ext}`;
   const { error: uploadError } = await supabase.storage.from("business-media").upload(path, file, {

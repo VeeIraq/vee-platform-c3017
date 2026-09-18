@@ -1,10 +1,12 @@
 import { getActiveBusiness } from "@/lib/data/dashboard";
+import { isFeatureEnabled } from "@/lib/data/feature-flags";
 import { ProfileForm } from "./profile-form";
 import { AppearanceForm } from "./appearance-form";
 import type { ProfileSectionKey } from "@/lib/actions/business";
 
 export default async function DashboardProfilePage() {
   const { business } = await getActiveBusiness();
+  const imageUploadsOn = await isFeatureEnabled("image_uploads", { businessId: business.id, planId: business.plan_id ?? undefined });
 
   return (
     <div className="flex flex-col gap-8">
@@ -13,6 +15,7 @@ export default async function DashboardProfilePage() {
         <p className="text-sm text-ink-muted">This is what customers see at vee.iq/{business.username}.</p>
       </div>
       <ProfileForm
+        imageUploadsEnabled={imageUploadsOn}
         business={{
           id: business.id,
           name: business.name as Record<string, string>,

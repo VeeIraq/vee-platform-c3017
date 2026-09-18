@@ -22,7 +22,15 @@ export default async function AdminBusinessesPage({
 
   return (
     <div>
-      <h1 className="mb-1 text-2xl font-extrabold text-ink">Businesses</h1>
+      <div className="mb-1 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-extrabold text-ink">Businesses</h1>
+        <Link
+          href="/admin/businesses/new"
+          className="min-h-10 rounded-[var(--radius-sm)] bg-accent px-4 py-2 text-sm font-bold text-white hover:opacity-90"
+        >
+          + New business
+        </Link>
+      </div>
       <p className="mb-6 text-sm text-ink-muted">Every business on the platform.</p>
 
       <form className="mb-4">

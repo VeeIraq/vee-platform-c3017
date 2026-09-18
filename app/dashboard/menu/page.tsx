@@ -16,6 +16,7 @@ export default async function DashboardMenuPage() {
   const locale = await getServerLocale();
 
   const menuOn = await isFeatureEnabled("digital_menus", { businessId: business.id, planId: business.plan_id ?? undefined });
+  const imageUploadsOn = await isFeatureEnabled("image_uploads", { businessId: business.id, planId: business.plan_id ?? undefined });
   if (!menuOn) {
     return (
       <p className="rounded-[var(--radius-md)] border border-dashed border-line p-8 text-center text-sm text-ink-muted">
@@ -49,6 +50,7 @@ export default async function DashboardMenuPage() {
         businessId={business.id}
         locale={locale}
         likesEnabled={business.likes_enabled}
+        imageUploadsEnabled={imageUploadsOn}
         labelCatalogue={labelCatalogue}
         categories={(categories ?? []).map((c) => ({ id: c.id, name: c.name as Record<string, string>, visible: c.visible }))}
         items={itemsWithOptions.map((i) => ({

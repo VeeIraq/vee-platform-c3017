@@ -8,6 +8,7 @@ export function BusinessAdminNav({ businessId }: { businessId: string }) {
   const base = `/admin/businesses/${businessId}`;
   const tabs = [
     { href: base, label: "Overview" },
+    { href: `${base}/plan`, label: "Plan & Features" },
     { href: `${base}/menu`, label: "Menu" },
     { href: `${base}/links`, label: "Links" },
     { href: `${base}/team`, label: "Team" },

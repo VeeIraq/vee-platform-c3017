@@ -21,6 +21,7 @@ import {
 } from "@/lib/actions/menu";
 import { Field, TextInput, TextArea, Select } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { pick } from "@/lib/i18n/pick";
 import type { Locale } from "@/lib/i18n/config";
 
@@ -282,6 +283,9 @@ function ItemForm({ businessId, categoryId, labelCatalogue }: { businessId: stri
       <Button type="submit" disabled={pending} className="self-start">
         {pending ? "Adding…" : "Add item"}
       </Button>
+      <p className="text-xs text-ink-muted">
+        You can add a photo right after the item is created — click its thumbnail in the list above.
+      </p>
     </form>
   );
 }
@@ -378,25 +382,29 @@ function ItemLabelsEditor({
 function ItemImage({ businessId, itemId, imageUrl }: { businessId: string; itemId: string; imageUrl: string | null }) {
   const [state, action, pending] = useActionState<ActionState, FormData>(uploadMenuItemImage, undefined);
   return (
-    <form action={action} className="shrink-0">
+    <form action={action} className="flex shrink-0 flex-col items-center gap-1">
       <input type="hidden" name="businessId" value={businessId} />
       <input type="hidden" name="itemId" value={itemId} />
-      <label className="block cursor-pointer">
+      <label className="group relative block cursor-pointer">
         {imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={imageUrl} alt="" className="h-16 w-16 rounded-[var(--radius-sm)] border border-line object-cover" />
         ) : (
           <span className="flex h-16 w-16 items-center justify-center rounded-[var(--radius-sm)] border border-dashed border-line text-xl">🍽️</span>
         )}
+        <span className="absolute inset-0 flex items-center justify-center rounded-[var(--radius-sm)] bg-ink/0 text-white opacity-0 transition-opacity group-hover:bg-ink/50 group-hover:opacity-100">
+          <Icon name="camera" className="h-5 w-5" />
+        </span>
         <input
           type="file"
           name="file"
           accept="image/png,image/jpeg,image/webp,image/gif"
           className="hidden"
           onChange={(e) => e.target.form?.requestSubmit()}
-          aria-label="Upload item image"
+          aria-label={imageUrl ? "Change item photo" : "Add item photo"}
         />
       </label>
+      <span className="text-[10px] font-semibold text-ink-muted">{imageUrl ? "Change photo" : "Add photo"}</span>
       {pending && <span className="text-[10px] text-ink-muted">Uploading…</span>}
       {state?.error && <span className="text-[10px] text-danger">{state.error}</span>}
     </form>

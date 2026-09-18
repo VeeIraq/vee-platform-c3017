@@ -103,6 +103,16 @@ html {
   color-scheme: light;
 }
 
+/* Smooth in-page scrolling for anchor links (nav "#how" / "#plans", the
+   skip link, etc.) -- without this the browser cuts straight to the
+   target with no transition at all, which read as an abrupt jump between
+   sections. Respects reduced motion like every other animation here. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -138,6 +148,70 @@ body {
 }
 .skip-link:focus {
   top: 1rem;
+}
+
+/*
+ * Scroll-reveal + hover-lift motion utilities.
+ *
+ * `.reveal` is safe by default (opacity: 1, no transform) so content is
+ * always visible with JS disabled or before hydration. The Reveal client
+ * component (components/public/reveal.tsx) only adds `data-animate="true"`
+ * after mount AND after checking `prefers-reduced-motion` itself, so a
+ * reduced-motion visitor never gets the hidden starting state in the first
+ * place -- this media query is a second, CSS-only backstop for that same
+ * preference, not the only guard.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal[data-animate="true"] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  .reveal[data-animate="true"].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hover-lift {
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+  .hover-lift:hover,
+  .hover-lift:focus-visible {
+    transform: translateY(-3px);
+  }
+}
+
+/* Shadow lift stays even under reduced motion -- it's a state change, not movement. */
+.hover-lift:hover,
+.hover-lift:focus-visible {
+  box-shadow: 0 12px 24px -12px rgba(36, 31, 27, 0.25);
+}
+
+/*
+ * Page-to-page navigation transitions (next-view-transitions, wrapping the
+ * browser's native View Transitions API -- see app/layout.tsx's
+ * <ViewTransitions> and the `Link` swapped in across the public site's nav).
+ * The browser's default crossfade needs no CSS at all; what's below only
+ * tunes duration and guards edge cases:
+ *  - keeps the page clickable during the brief transition instead of the
+ *    transition overlay eating pointer events
+ *  - explicitly zeroes duration under reduced motion, since browsers aren't
+ *    guaranteed to do that on their own for this API yet
+ */
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }
 
 @media (max-width: 400px) {

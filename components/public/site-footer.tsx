@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useLocale } from "@/components/i18n/locale-provider";
 import type { NavItem } from "@/lib/data/public";
 
@@ -70,7 +70,7 @@ export function SiteFooter({ navItems = [] }: { navItems?: NavItem[] }) {
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
         <div>
           <div className="mb-3 flex items-center gap-2">
-            <Image src="/brand/vee-logo-white.png" alt="Vee" width={96} height={28} />
+            <Image src="/brand/vee-logo-white.png" alt="Vee" width={96} height={33} />
           </div>
           <p className="max-w-xs text-sm">{t("footer.tagline")}</p>
         </div>

@@ -1,13 +1,13 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import type { ReactNode } from "react";
 
 export function AuthShell({ title, sub, children, footer }: { title: string; sub: string; children: ReactNode; footer?: ReactNode }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-fog px-4 py-12">
       <div className="w-full max-w-md">
-        <Link href="/" className="mb-8 flex items-center justify-center gap-2">
-          <Image src="/brand/vee-mark-square.png" alt="Vee" width={40} height={40} className="rounded-xl" />
+        <Link href="/" className="mb-8 flex items-center justify-center" aria-label="Vee">
+          <Image src="/brand/vee-logo-black.png" alt="Vee" width={110} height={38} />
         </Link>
         <div className="rounded-[var(--radius-lg)] border border-line bg-paper p-6 shadow-md sm:p-8">
           <h1 className="text-center text-2xl font-extrabold text-ink">{title}</h1>

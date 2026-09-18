@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import { ViewTransitions } from "next-view-transitions";
 import { fontVariables } from "@/lib/fonts";
 import { DEFAULT_LOCALE, LOCALE_COOKIE, dir, isLocale } from "@/lib/i18n/config";
 import { getDictionary, t } from "@/lib/i18n/dictionaries";
@@ -34,16 +35,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const dict = getDictionary(locale);
 
   return (
-    <html lang={locale} dir={dir(locale)} className={fontVariables}>
-      <body>
-        <a href="#main" className="skip-link">
-          {t(dict, "meta.skipToContent")}
-        </a>
-        <LocaleProvider locale={locale} dict={dict}>
-          {children}
-          {!hasChosenLocale && <LanguageGate />}
-        </LocaleProvider>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang={locale} dir={dir(locale)} className={fontVariables}>
+        <body>
+          <a href="#main" className="skip-link">
+            {t(dict, "meta.skipToContent")}
+          </a>
+          <LocaleProvider locale={locale} dict={dict}>
+            {children}
+            {!hasChosenLocale && <LanguageGate />}
+          </LocaleProvider>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

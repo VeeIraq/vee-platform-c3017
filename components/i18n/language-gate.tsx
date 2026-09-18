@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { setLocaleValue } from "@/lib/actions/locale";
@@ -42,7 +43,7 @@ export function LanguageGate() {
       className="fixed inset-0 z-50 flex items-center justify-center bg-ink p-6"
     >
       <div className="w-full max-w-sm text-center">
-        <div className="mx-auto mb-6 h-12 w-12 rounded-2xl [background:var(--accent-grad)]" aria-hidden="true" />
+        <Image src="/brand/vee-logo-white.png" alt="" width={128} height={44} priority className="mx-auto mb-6" />
         <h1 id="lang-gate-title" className="mb-2 text-xl font-extrabold text-white">
           Choose your language · اختر لغتك · زمانەکەت هەڵبژێرە
         </h1>

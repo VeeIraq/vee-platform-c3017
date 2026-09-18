@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useActionState } from "react";
 import { requestPasswordReset, type AuthFormState } from "@/lib/actions/auth";
 import { Field, TextInput } from "@/components/ui/field";

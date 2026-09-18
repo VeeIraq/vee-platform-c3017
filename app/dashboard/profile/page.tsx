@@ -1,13 +1,17 @@
 import { getActiveBusiness } from "@/lib/data/dashboard";
 import { ProfileForm } from "./profile-form";
+import { AppearanceForm } from "./appearance-form";
+import type { ProfileSectionKey } from "@/lib/actions/business";
 
 export default async function DashboardProfilePage() {
   const { business } = await getActiveBusiness();
 
   return (
-    <div>
-      <h1 className="mb-1 text-2xl font-extrabold text-ink">Business profile</h1>
-      <p className="mb-6 text-sm text-ink-muted">This is what customers see at vee.iq/{business.username}.</p>
+    <div className="flex flex-col gap-8">
+      <div>
+        <h1 className="mb-1 text-2xl font-extrabold text-ink">Business profile</h1>
+        <p className="text-sm text-ink-muted">This is what customers see at vee.iq/{business.username}.</p>
+      </div>
       <ProfileForm
         business={{
           id: business.id,
@@ -25,6 +29,11 @@ export default async function DashboardProfilePage() {
           logo_url: business.logo_url,
           cover_image_url: business.cover_image_url,
         }}
+      />
+      <AppearanceForm
+        businessId={business.id}
+        themePreset={business.theme_preset}
+        profileSections={business.profile_sections as Partial<Record<ProfileSectionKey, boolean>> | null}
       />
     </div>
   );

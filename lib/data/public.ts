@@ -41,12 +41,15 @@ export type NavItem = {
 const DEFAULT_HOMEPAGE_SECTIONS: SiteSection[] = [
   { key: "hero", visible: true, sortOrder: 0 },
   { key: "explain", visible: true, sortOrder: 1 },
-  { key: "why", visible: true, sortOrder: 2 },
-  { key: "products", visible: true, sortOrder: 3 },
-  { key: "how", visible: true, sortOrder: 4 },
-  { key: "plans", visible: true, sortOrder: 5 },
-  { key: "faq", visible: true, sortOrder: 6 },
-  { key: "contact", visible: true, sortOrder: 7 },
+  { key: "digitalMenu", visible: true, sortOrder: 2 },
+  { key: "why", visible: true, sortOrder: 3 },
+  { key: "businessTypes", visible: true, sortOrder: 4 },
+  { key: "products", visible: true, sortOrder: 5 },
+  { key: "how", visible: true, sortOrder: 6 },
+  { key: "plans", visible: true, sortOrder: 7 },
+  { key: "analyticsStats", visible: true, sortOrder: 8 },
+  { key: "faq", visible: true, sortOrder: 9 },
+  { key: "contact", visible: true, sortOrder: 10 },
 ];
 
 /**

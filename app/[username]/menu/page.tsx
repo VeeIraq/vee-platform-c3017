@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getServerDictionary } from "@/lib/i18n/server";
@@ -49,12 +50,21 @@ export default async function BusinessMenuPage({ params }: { params: Promise<Par
   return (
     <div dir={dir(locale)} className="min-h-screen bg-paper">
       <header className="border-b border-line px-4 py-4 sm:px-6">
-        <div className="mx-auto flex max-w-2xl items-center justify-between">
-          <div>
+        <div className="mx-auto flex max-w-2xl items-center justify-between gap-3">
+          <div className="min-w-0">
             <Link href={`/${username}`} className="text-sm font-semibold text-accent hover:underline">
               ← {tt("viewProfile")}
             </Link>
-            <h1 className="mt-1 text-xl font-extrabold text-ink">{pick(business.name, locale)}</h1>
+            <h1 className="mt-1 truncate text-xl font-extrabold text-ink">{pick(business.name, locale)}</h1>
+          </div>
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[14px] border border-line bg-ink">
+            {business.logo_url ? (
+              <Image src={business.logo_url} alt="" width={44} height={44} className="h-full w-full object-cover" />
+            ) : (
+              <span className="text-sm font-bold text-white" aria-hidden="true">
+                {pick(business.name, locale).slice(0, 1).toUpperCase()}
+              </span>
+            )}
           </div>
         </div>
       </header>
@@ -96,6 +106,10 @@ export default async function BusinessMenuPage({ params }: { params: Promise<Par
           dict={dict}
         />
       )}
+
+      <p className="pb-10 text-center text-xs text-ink-muted">
+        {t(dict, "profile.poweredBy")} Vee
+      </p>
     </div>
   );
 }

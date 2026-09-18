@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import type { Metadata } from "next";
 import { getServerDictionary } from "@/lib/i18n/server";
 import { t } from "@/lib/i18n/dictionaries";

@@ -76,7 +76,72 @@ export async function updateBusinessProfile(_prevState: ActionState, formData: F
   });
 
   revalidatePath("/dashboard/profile");
-  revalidatePath(`/${parsed.data.businessId}`);
+  // Revalidate every /[username] page, not a literal "/<uuid>" path (which
+  // is never a real route -- the public profile lives at /<username>).
+  revalidatePath("/[username]", "page");
+  return { success: true };
+}
+
+const PROFILE_SECTION_KEYS = [
+  "offer",
+  "menu",
+  "whatsapp",
+  "instagram",
+  "maps",
+  "reviews",
+  "call",
+  "website",
+  "reservation",
+  "customReview",
+  "customLinks",
+] as const;
+
+export type ProfileSectionKey = (typeof PROFILE_SECTION_KEYS)[number];
+
+const THEME_PRESETS = ["vee", "midnight", "ocean", "sunset"] as const;
+
+const appearanceSchema = z.object({
+  businessId: z.string().uuid(),
+  themePreset: z.enum(THEME_PRESETS),
+});
+
+/**
+ * Updates the owner-controlled appearance of their own public profile
+ * (app/[username]): which colour preset to render it in, and which
+ * sections/links to show. Independent of the plan-level feature flags in
+ * lib/data/feature-flags.ts -- this only ever narrows what's shown, never
+ * widens it (app/[username]/page.tsx ANDs both together).
+ */
+export async function updateBusinessAppearance(_prevState: ActionState, formData: FormData): Promise<ActionState> {
+  const parsed = appearanceSchema.safeParse({
+    businessId: formData.get("businessId"),
+    themePreset: formData.get("themePreset"),
+  });
+  if (!parsed.success) {
+    return { error: parsed.error.issues[0]?.message ?? "Please check the form." };
+  }
+
+  const membership = await requireBusinessMembership(parsed.data.businessId);
+  if (!(membership.role === "owner" || membership.permissions.includes("profile.edit"))) {
+    return { error: "You don't have permission to edit the business profile." };
+  }
+
+  const profileSections = Object.fromEntries(
+    PROFILE_SECTION_KEYS.map((key) => [key, formData.get(`section_${key}`) === "on"])
+  );
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("businesses")
+    .update({ theme_preset: parsed.data.themePreset, profile_sections: profileSections })
+    .eq("id", parsed.data.businessId);
+
+  if (error) {
+    return { error: "Could not save your changes. Please try again." };
+  }
+
+  revalidatePath("/dashboard/profile");
+  revalidatePath("/[username]", "page");
   return { success: true };
 }
 

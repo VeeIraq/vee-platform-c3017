@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { useLocale } from "@/components/i18n/locale-provider";
 import { dir } from "@/lib/i18n/config";
 import { buttonClass } from "@/components/ui/button";

@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
+import { Link } from "next-view-transitions";
+import { usePathname } from "next/navigation";
+import { useState, type MouseEvent } from "react";
 import { useLocale } from "@/components/i18n/locale-provider";
 import { LanguageSwitcher } from "@/components/public/language-switcher";
 import { buttonClass } from "@/components/ui/button";
@@ -11,6 +12,19 @@ import type { NavItem } from "@/lib/data/public";
 export function SiteHeader({ navItems = [] }: { navItems?: NavItem[] }) {
   const { t, locale } = useLocale();
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  // A <Link href="/"> to the page you're already on doesn't trigger a
+  // navigation at all (same URL, nothing for Next to do), so clicking
+  // "Home" while already on the homepage -- scrolled down -- silently did
+  // nothing. Scroll to top ourselves in that one case instead; every other
+  // path still gets a normal Link navigation to "/".
+  function goHome(e: MouseEvent, href: string) {
+    if (href === "/" && pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
 
   // Falls back to the hardcoded, translation-driven list only when Super
   // Admin hasn't seeded (or has emptied) the nav_menu_items table -- this
@@ -42,9 +56,8 @@ export function SiteHeader({ navItems = [] }: { navItems?: NavItem[] }) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2 font-extrabold text-ink">
-          <Image src="/brand/vee-mark-square.png" alt="" width={32} height={32} className="rounded-lg" priority />
-          <span className="text-lg">Vee</span>
+        <Link href="/" onClick={(e) => goHome(e, "/")} className="flex items-center" aria-label="Vee">
+          <Image src="/brand/vee-logo-black.png" alt="Vee" width={96} height={33} priority />
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-6 md:flex">
@@ -52,6 +65,7 @@ export function SiteHeader({ navItems = [] }: { navItems?: NavItem[] }) {
             <Link
               key={link.key}
               href={link.href}
+              onClick={(e) => goHome(e, link.href)}
               target={link.openNewTab ? "_blank" : undefined}
               rel={link.openNewTab ? "noopener noreferrer" : undefined}
               className="flex items-center gap-1.5 text-sm font-semibold text-ink-soft hover:text-accent"
@@ -98,7 +112,10 @@ export function SiteHeader({ navItems = [] }: { navItems?: NavItem[] }) {
                   target={link.openNewTab ? "_blank" : undefined}
                   rel={link.openNewTab ? "noopener noreferrer" : undefined}
                   className="flex min-h-11 items-center gap-2 rounded-[var(--radius-sm)] px-3 py-3 text-base font-semibold text-ink-soft hover:bg-fog"
-                  onClick={() => setOpen(false)}
+                  onClick={(e) => {
+                    goHome(e, link.href);
+                    setOpen(false);
+                  }}
                 >
                   {link.imageUrl ? (
                     <Image src={link.imageUrl} alt="" width={18} height={18} className="rounded-sm" />

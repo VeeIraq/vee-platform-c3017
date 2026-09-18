@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { getServerDictionary } from "@/lib/i18n/server";
@@ -8,6 +8,11 @@ import { pick } from "@/lib/i18n/pick";
 import { getCatalogueProducts, getPlans, getHomepageSections, getFaqItems, getHomepageSeo } from "@/lib/data/public";
 import { getCurrentUser } from "@/lib/auth/dal";
 import { buttonClass } from "@/components/ui/button";
+import { Reveal } from "@/components/public/reveal";
+import { FaqAccordion } from "@/components/public/faq-accordion";
+import { DigitalMenuSection } from "@/components/public/digital-menu-section";
+import { BusinessTypesSection } from "@/components/public/business-types-section";
+import { AnalyticsStatsSection } from "@/components/public/analytics-stats-section";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { locale, dict } = await getServerDictionary();
@@ -50,7 +55,7 @@ export default async function HomePage({
     hero: (
       <section key="hero" className="relative overflow-hidden bg-ink px-4 py-20 text-white sm:px-6 sm:py-28">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-4 text-sm font-bold uppercase tracking-widest text-gold">{tt("hero.kicker")}</p>
+          <Image src="/brand/vee-logo-white.png" alt="Vee" width={112} height={38} priority className="mx-auto mb-4" />
           <h1 className="text-balance text-4xl font-extrabold leading-tight sm:text-5xl">{tt("hero.title")}</h1>
           <p className="mt-4 text-lg font-semibold text-paper-muted">{tt("hero.tagline")}</p>
           <p className="mx-auto mt-4 max-w-xl text-paper-muted">{tt("hero.desc")}</p>
@@ -69,18 +74,6 @@ export default async function HomePage({
               {tt("hero.ctaSecondary")}
             </Link>
           </div>
-          <dl className="mt-14 grid grid-cols-3 gap-4 border-t border-white/10 pt-8 text-start sm:text-center">
-            {[
-              [tt("hero.statBusinessesN"), tt("hero.statBusinesses")],
-              [tt("hero.statChannelsN"), tt("hero.statChannels")],
-              [tt("hero.statLangN"), tt("hero.statLang")],
-            ].map(([n, label]) => (
-              <div key={label}>
-                <dt className="text-2xl font-extrabold text-gold sm:text-3xl">{n}</dt>
-                <dd className="mt-1 text-xs text-paper-muted sm:text-sm">{label}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
     ),
@@ -106,24 +99,49 @@ export default async function HomePage({
       </section>
     ),
 
+    digitalMenu: (
+      <DigitalMenuSection
+        key="digitalMenu"
+        eyebrow={tt("menuTeaser.eyebrow")}
+        title={tt("menuTeaser.title")}
+        desc={tt("menuTeaser.desc")}
+        points={[tt("menuTeaser.point1"), tt("menuTeaser.point2"), tt("menuTeaser.point3")]}
+        journey={[
+          tt("menuTeaser.journeyTap"),
+          tt("menuTeaser.journeyOpen"),
+          tt("menuTeaser.journeyExplore"),
+          tt("menuTeaser.journeyOrder"),
+          tt("menuTeaser.journeyReview"),
+        ]}
+        cta={tt("menuTeaser.cta")}
+        demoHref="/products"
+      />
+    ),
+
     why: (
       <section key="why" className="bg-fog px-4 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-5xl">
           <p className="mb-2 text-sm font-bold uppercase tracking-widest text-accent-3">{tt("why.eyebrow")}</p>
           <h2 className="max-w-xl text-3xl font-extrabold text-ink">{tt("why.title")}</h2>
           <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-            {CONTENT.WHY_ITEMS.map((item) => {
+            {CONTENT.WHY_ITEMS.map((item, i) => {
               const it = item as { title: Record<string, string>; desc: Record<string, string> };
               return (
-                <li key={pick(it.title, locale)} className="rounded-[var(--radius-md)] bg-paper p-5 shadow-sm">
-                  <h3 className="font-bold text-ink">{pick(it.title, locale)}</h3>
-                  <p className="mt-1.5 text-sm text-ink-muted">{pick(it.desc, locale)}</p>
-                </li>
+                <Reveal key={pick(it.title, locale)} as="li" delayMs={(i % 5) * 60}>
+                  <div className="hover-lift rounded-[var(--radius-md)] bg-paper p-5 shadow-sm">
+                    <h3 className="font-bold text-ink">{pick(it.title, locale)}</h3>
+                    <p className="mt-1.5 text-sm text-ink-muted">{pick(it.desc, locale)}</p>
+                  </div>
+                </Reveal>
               );
             })}
           </ul>
         </div>
       </section>
+    ),
+
+    businessTypes: (
+      <BusinessTypesSection key="businessTypes" eyebrow={tt("businessTypesSection.eyebrow")} title={tt("businessTypesSection.title")} locale={locale} />
     ),
 
     products: (
@@ -246,19 +264,35 @@ export default async function HomePage({
       </section>
     ),
 
+    analyticsStats: (
+      <AnalyticsStatsSection
+        key="analyticsStats"
+        eyebrow={tt("analyticsTeaser.eyebrow")}
+        title={tt("analyticsTeaser.title")}
+        desc={tt("analyticsTeaser.desc")}
+        cta={tt("analyticsTeaser.cta")}
+        kpiLabels={{
+          profileVisits: tt("analyticsTeaser.kpi.profileVisits"),
+          menuViews: tt("analyticsTeaser.kpi.menuViews"),
+          whatsappClicks: tt("analyticsTeaser.kpi.whatsappClicks"),
+          nfcTaps: tt("analyticsTeaser.kpi.nfcTaps"),
+          orders: tt("analyticsTeaser.kpi.orders"),
+        }}
+      />
+    ),
+
     faq: (
       <section key="faq" className="bg-fog px-4 py-16 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-3xl">
           <p className="mb-2 text-sm font-bold uppercase tracking-widest text-accent-3">{tt("faq.eyebrow")}</p>
           <h2 className="text-3xl font-extrabold text-ink">{tt("faq.title")}</h2>
-          <dl className="mt-8 flex flex-col divide-y divide-line rounded-[var(--radius-md)] border border-line bg-paper">
-            {faqItems.map((item) => (
-              <div key={item.key} className="p-5">
-                <dt className="font-bold text-ink">{item.q[locale] || item.q.en}</dt>
-                <dd className="mt-1.5 text-sm text-ink-muted">{item.a[locale] || item.a.en}</dd>
-              </div>
-            ))}
-          </dl>
+          <FaqAccordion
+            items={faqItems.map((item) => ({
+              key: item.key,
+              question: item.q[locale] || item.q.en,
+              answer: item.a[locale] || item.a.en,
+            }))}
+          />
         </div>
       </section>
     ),

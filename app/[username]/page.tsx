@@ -8,6 +8,8 @@ import { getPublishedBusinessByUsername, getBusinessLinks, logAnalyticsEvent } f
 import { isFeatureEnabled } from "@/lib/data/feature-flags";
 import { getPublicReviewPage } from "@/lib/data/reviews";
 import { dir } from "@/lib/i18n/config";
+import { getThemeStyle } from "@/lib/theme-presets";
+import type { ProfileSectionKey } from "@/lib/actions/business";
 import { ProfileLinkList } from "./profile-link-list";
 
 type Params = { username: string };
@@ -59,26 +61,35 @@ export default async function BusinessProfilePage({ params }: { params: Promise<
   // excluded from the profile here too rather than just gated on `enabled`.
   const customReviewPage = customReviewsFeatureOn ? await getPublicReviewPage(business.id) : null;
 
+  // Owner-controlled show/hide, independent of (and always narrower than)
+  // the plan-level feature flags above -- see lib/actions/business.ts's
+  // updateBusinessAppearance and 0022_business_appearance.sql. Missing keys
+  // (e.g. a business saved before a given section existed) default to shown.
+  const sections = (business.profile_sections ?? {}) as Partial<Record<ProfileSectionKey, boolean>>;
+  const sectionOn = (key: ProfileSectionKey) => sections[key] ?? true;
+
   const fixedLinks: { icon: string; label: string; url: string }[] = [];
-  if (business.whatsapp_number) {
+  if (business.whatsapp_number && sectionOn("whatsapp")) {
     fixedLinks.push({ icon: "whatsapp", label: "WhatsApp", url: `https://wa.me/${business.whatsapp_number.replace(/\D/g, "")}` });
   }
-  if (business.instagram_url) fixedLinks.push({ icon: "instagram", label: "Instagram", url: business.instagram_url });
-  if (business.google_maps_url) fixedLinks.push({ icon: "maps", label: "Maps", url: business.google_maps_url });
-  if (reviewsFeatureOn && business.google_review_url) fixedLinks.push({ icon: "reviews", label: "Google Reviews", url: business.google_review_url });
-  if (business.phone) fixedLinks.push({ icon: "call", label: "Call", url: `tel:${business.phone}` });
-  if (business.website_url) fixedLinks.push({ icon: "website", label: "Website", url: business.website_url });
-  if (reservationsFeatureOn && business.reservation_enabled && business.reservation_url) {
+  if (business.instagram_url && sectionOn("instagram")) fixedLinks.push({ icon: "instagram", label: "Instagram", url: business.instagram_url });
+  if (business.google_maps_url && sectionOn("maps")) fixedLinks.push({ icon: "maps", label: "Maps", url: business.google_maps_url });
+  if (reviewsFeatureOn && business.google_review_url && sectionOn("reviews")) {
+    fixedLinks.push({ icon: "reviews", label: "Google Reviews", url: business.google_review_url });
+  }
+  if (business.phone && sectionOn("call")) fixedLinks.push({ icon: "call", label: "Call", url: `tel:${business.phone}` });
+  if (business.website_url && sectionOn("website")) fixedLinks.push({ icon: "website", label: "Website", url: business.website_url });
+  if (reservationsFeatureOn && business.reservation_enabled && business.reservation_url && sectionOn("reservation")) {
     fixedLinks.push({ icon: "reservation", label: "Reserve", url: business.reservation_url });
   }
-  if (customReviewPage) {
+  if (customReviewPage && sectionOn("customReview")) {
     fixedLinks.push({ icon: "customReview", label: tt("profile.rateUs"), url: `/${username}/reviews` });
   }
-  const showMenuLink = menuFeatureOn && business.menu_link_enabled;
-  const customLinks = customLinksFeatureOn ? links : [];
+  const showMenuLink = menuFeatureOn && business.menu_link_enabled && sectionOn("menu");
+  const customLinks = customLinksFeatureOn && sectionOn("customLinks") ? links : [];
 
   return (
-    <div dir={dir(locale)} className="min-h-screen bg-fog pb-16">
+    <div dir={dir(locale)} className="min-h-screen bg-fog pb-16" style={getThemeStyle(business.theme_preset)}>
       <div className="mx-auto max-w-md px-4 pt-8 sm:px-0">
         <div className="overflow-hidden rounded-[var(--radius-lg)] border border-line bg-paper text-center">
           {business.cover_image_url ? (
@@ -102,7 +113,7 @@ export default async function BusinessProfilePage({ params }: { params: Promise<
             {business.category && <p className="mt-0.5 text-sm font-bold text-accent">{pick(business.category, locale)}</p>}
             {business.description && <p className="mt-2 text-sm text-ink-muted">{pick(business.description, locale)}</p>}
 
-            {offersFeatureOn && business.offer && pick(business.offer, locale) && (
+            {offersFeatureOn && sectionOn("offer") && business.offer && pick(business.offer, locale) && (
               <p className="mt-4 rounded-[var(--radius-sm)] bg-gold/30 px-3 py-2 text-sm font-semibold text-canyon">
                 {pick(business.offer, locale)}
               </p>
@@ -123,7 +134,7 @@ export default async function BusinessProfilePage({ params }: { params: Promise<
               links={[...fixedLinks, ...customLinks.map((l) => ({ icon: l.icon, label: pick(l.label, locale), url: l.url }))]}
             />
 
-            <p className="mt-8 text-xs text-ink-muted">Powered by Vee</p>
+            <p className="mt-8 text-xs text-ink-muted">{tt("profile.poweredBy")} Vee</p>
           </div>
         </div>
       </div>

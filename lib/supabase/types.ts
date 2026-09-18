@@ -65,6 +65,8 @@ export interface Database {
           offer: LocalizedText | null;
           menu_link_enabled: boolean;
           likes_enabled: boolean;
+          theme_preset: string;
+          profile_sections: Json;
           whatsapp_number: string | null;
           phone: string | null;
           instagram_url: string | null;

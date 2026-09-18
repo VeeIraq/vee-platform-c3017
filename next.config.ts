@@ -1,27 +1,5 @@
 import type { NextConfig } from "next";
 
-// Same "deliberately broad rather than hardcoding one project ref" reasoning
-// as the images.remotePatterns entry below -- this app talks to Supabase
-// directly from the browser (lib/supabase/client.ts, the public anon key),
-// for REST/Auth calls and for the same Storage URLs images.remotePatterns
-// already allows, so connect-src/img-src need the same wildcard.
-const SUPABASE_ORIGIN = "https://*.supabase.co";
-
-const CSP = [
-  "default-src 'self'",
-  "script-src 'self'",
-  // 'unsafe-inline' here covers React's style="" attribute usage (e.g.
-  // app/global-error.tsx, which can't depend on globals.css by design --
-  // see its own comment) -- it does not affect script-src above.
-  "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: ${SUPABASE_ORIGIN}`,
-  "font-src 'self' data:",
-  `connect-src 'self' ${SUPABASE_ORIGIN}`,
-  "frame-ancestors 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-].join("; ");
-
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -35,17 +13,21 @@ const nextConfig: NextConfig = {
     return [
       {
         // Applies to every route. This was previously entirely absent (see
-        // the launch audit) -- no CSP/HSTS/X-Frame-Options/Referrer-Policy
-        // configured anywhere. Reasoned through against this app's actual
-        // code (no iframes, no inline <script>, no third-party embeds — see
-        // the launch audit's grep for sentry/posthog/gtag/etc., all absent)
-        // but NOT yet exercised against a running instance: verify nothing
-        // is silently blocked during the staging QA pass in Section 5,
-        // especially Supabase Storage image loading and the browser-side
-        // auth calls in lib/supabase/client.ts.
+        // the launch audit) -- no HSTS/X-Frame-Options/Referrer-Policy
+        // configured anywhere.
+        //
+        // Content-Security-Policy is deliberately NOT set here: it used to
+        // be a static value in this array, but a static script-src can only
+        // ever be 'self' or 'unsafe-inline' -- it can't carry a nonce, and
+        // without a nonce the browser blocks the small inline <script> tags
+        // Next.js itself injects to hydrate the page. That's exactly what
+        // broke every client-side interaction on the live site (language
+        // buttons included) after this header was first added. CSP now
+        // lives in lib/supabase/proxy-session.ts (invoked from proxy.ts),
+        // which generates a fresh nonce per request -- something this
+        // static config function has no way to do -- via lib/security/csp.ts.
         source: "/(.*)",
         headers: [
-          { key: "Content-Security-Policy", value: CSP },
           // "preload" only expresses intent for the HSTS preload list —
           // submitting the domain to hstspreload.org is a separate, manual,
           // hard-to-reverse step; do that only once staging has proven HTTPS

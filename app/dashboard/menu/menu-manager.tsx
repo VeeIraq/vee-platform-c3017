@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   createMenuCategory,
   createMenuItem,
+  updateMenuItem,
   deleteMenuCategory,
   deleteMenuItem,
   toggleMenuCategory,
@@ -33,8 +34,10 @@ type Item = {
   id: string;
   category_id: string;
   name: Record<string, string>;
+  description: Record<string, string>;
   price: number;
   discount_price: number | null;
+  tags: string[];
   available: boolean;
   visible: boolean;
   image_url: string | null;
@@ -64,6 +67,7 @@ export function MenuManager({
   const [selectedCategory, setSelectedCategory] = useState<string>(categories[0]?.id ?? "");
   const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
   const [expandedLabelsItemId, setExpandedLabelsItemId] = useState<string | null>(null);
+  const [expandedEditItemId, setExpandedEditItemId] = useState<string | null>(null);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
@@ -187,6 +191,13 @@ export function MenuManager({
                           </button>
                           <button
                             type="button"
+                            className="font-semibold text-accent hover:underline"
+                            onClick={() => setExpandedEditItemId((cur) => (cur === item.id ? null : item.id))}
+                          >
+                            {expandedEditItemId === item.id ? "Hide" : "Edit"}
+                          </button>
+                          <button
+                            type="button"
                             className="font-semibold text-danger"
                             onClick={() =>
                               startTransition(() => {
@@ -200,6 +211,9 @@ export function MenuManager({
                         </div>
                       </div>
                     </div>
+                    {expandedEditItemId === item.id && (
+                      <ItemEditForm businessId={businessId} item={item} categories={categories} locale={locale} />
+                    )}
                     {expandedItemId === item.id && <ItemOptionsEditor businessId={businessId} item={item} locale={locale} />}
                     {expandedLabelsItemId === item.id && (
                       <ItemLabelsEditor businessId={businessId} item={item} labelCatalogue={labelCatalogue} locale={locale} />
@@ -211,7 +225,7 @@ export function MenuManager({
               )}
             </ul>
 
-            <ItemForm businessId={businessId} categoryId={selectedCategory} labelCatalogue={labelCatalogue} />
+            <ItemForm businessId={businessId} categoryId={selectedCategory} categories={categories} labelCatalogue={labelCatalogue} />
           </>
         ) : (
           <p className="text-sm text-ink-muted">Select or create a category to manage its items.</p>
@@ -238,15 +252,33 @@ function CategoryForm({ businessId }: { businessId: string }) {
   );
 }
 
-function ItemForm({ businessId, categoryId, labelCatalogue }: { businessId: string; categoryId: string; labelCatalogue: MenuLabel[] }) {
+function ItemForm({
+  businessId,
+  categoryId,
+  categories,
+  labelCatalogue,
+}: {
+  businessId: string;
+  categoryId: string;
+  categories: Category[];
+  labelCatalogue: MenuLabel[];
+}) {
   const [state, action, pending] = useActionState<ActionState, FormData>(createMenuItem, undefined);
   return (
     <form action={action} className="flex flex-col gap-4 rounded-[var(--radius-lg)] border border-line bg-paper p-6">
       <input type="hidden" name="businessId" value={businessId} />
-      <input type="hidden" name="categoryId" value={categoryId} />
       <h2 className="font-bold text-ink">Add an item</h2>
       {state?.error && <p role="alert" className="text-sm font-medium text-danger">{state.error}</p>}
       <div className="grid gap-4 sm:grid-cols-2">
+        <Field label="Category" htmlFor="categoryId" required>
+          <Select id="categoryId" name="categoryId" defaultValue={categoryId} required>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name.en ?? Object.values(cat.name)[0]}
+              </option>
+            ))}
+          </Select>
+        </Field>
         <Field label="Name (English)" htmlFor="nameEn" required>
           <TextInput id="nameEn" name="nameEn" required />
         </Field>
@@ -269,6 +301,15 @@ function ItemForm({ businessId, categoryId, labelCatalogue }: { businessId: stri
       <Field label="Description (English)" htmlFor="descriptionEn">
         <TextArea id="descriptionEn" name="descriptionEn" />
       </Field>
+      <Field label="Photo (optional)" htmlFor="image" hint="You can also add or change it later from the item's thumbnail.">
+        <input
+          id="image"
+          name="image"
+          type="file"
+          accept="image/png,image/jpeg,image/webp,image/gif"
+          className="block w-full text-sm text-ink-soft file:me-3 file:rounded-[var(--radius-sm)] file:border-0 file:bg-fog file:px-3 file:py-2 file:text-sm file:font-semibold file:text-ink"
+        />
+      </Field>
       {labelCatalogue.length > 0 && (
         <fieldset>
           <legend className="mb-2 text-sm font-semibold text-ink-soft">Labels</legend>
@@ -285,9 +326,81 @@ function ItemForm({ businessId, categoryId, labelCatalogue }: { businessId: stri
       <Button type="submit" disabled={pending} className="self-start">
         {pending ? "Adding…" : "Add item"}
       </Button>
-      <p className="text-xs text-ink-muted">
-        You can add a photo right after the item is created — click its thumbnail in the list above.
-      </p>
+    </form>
+  );
+}
+
+// Full edit panel for an existing item -- covers exactly the fields that had
+// no way to change after creation (category, names, descriptions, price,
+// discount, tags). Image, availability, visibility and labels already have
+// their own dedicated inline controls elsewhere on the row.
+function ItemEditForm({
+  businessId,
+  item,
+  categories,
+  locale,
+}: {
+  businessId: string;
+  item: Item;
+  categories: Category[];
+  locale: Locale;
+}) {
+  const [state, action, pending] = useActionState<ActionState, FormData>(updateMenuItem, undefined);
+  return (
+    <form action={action} className="flex flex-col gap-4 border-t border-line pt-3">
+      <input type="hidden" name="businessId" value={businessId} />
+      <input type="hidden" name="itemId" value={item.id} />
+      <p className="text-sm font-bold text-ink">Edit item</p>
+      {state?.error && <p role="alert" className="text-sm font-medium text-danger">{state.error}</p>}
+      {state?.success && <p className="text-sm font-medium text-success">Saved.</p>}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field label="Category" htmlFor={`edit-categoryId-${item.id}`} required>
+          <Select id={`edit-categoryId-${item.id}`} name="categoryId" defaultValue={item.category_id} required>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {pick(cat.name, locale)}
+              </option>
+            ))}
+          </Select>
+        </Field>
+        <Field label="Price (IQD)" htmlFor={`edit-price-${item.id}`} required>
+          <TextInput id={`edit-price-${item.id}`} name="price" type="number" min={0} step={250} defaultValue={item.price} required />
+        </Field>
+        <Field label="Name (English)" htmlFor={`edit-nameEn-${item.id}`} required>
+          <TextInput id={`edit-nameEn-${item.id}`} name="nameEn" defaultValue={item.name.en} required />
+        </Field>
+        <Field label="Discount price (optional)" htmlFor={`edit-discountPrice-${item.id}`}>
+          <TextInput
+            id={`edit-discountPrice-${item.id}`}
+            name="discountPrice"
+            type="number"
+            min={0}
+            step={250}
+            defaultValue={item.discount_price ?? ""}
+          />
+        </Field>
+        <Field label="Name (Arabic)" htmlFor={`edit-nameAr-${item.id}`}>
+          <TextInput id={`edit-nameAr-${item.id}`} name="nameAr" dir="rtl" defaultValue={item.name.ar} />
+        </Field>
+        <Field label="Tags" htmlFor={`edit-tags-${item.id}`} hint="Comma-separated: popular, new, featured">
+          <TextInput id={`edit-tags-${item.id}`} name="tags" placeholder="popular, new" defaultValue={item.tags.join(", ")} />
+        </Field>
+        <Field label="Name (Kurdish)" htmlFor={`edit-nameKu-${item.id}`}>
+          <TextInput id={`edit-nameKu-${item.id}`} name="nameKu" dir="rtl" defaultValue={item.name.ku} />
+        </Field>
+      </div>
+      <Field label="Description (English)" htmlFor={`edit-descriptionEn-${item.id}`}>
+        <TextArea id={`edit-descriptionEn-${item.id}`} name="descriptionEn" defaultValue={item.description.en} />
+      </Field>
+      <Field label="Description (Arabic)" htmlFor={`edit-descriptionAr-${item.id}`}>
+        <TextArea id={`edit-descriptionAr-${item.id}`} name="descriptionAr" dir="rtl" defaultValue={item.description.ar} />
+      </Field>
+      <Field label="Description (Kurdish)" htmlFor={`edit-descriptionKu-${item.id}`}>
+        <TextArea id={`edit-descriptionKu-${item.id}`} name="descriptionKu" dir="rtl" defaultValue={item.description.ku} />
+      </Field>
+      <Button type="submit" size="sm" disabled={pending} className="self-start">
+        {pending ? "Saving…" : "Save changes"}
+      </Button>
     </form>
   );
 }

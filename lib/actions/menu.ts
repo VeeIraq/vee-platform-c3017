@@ -109,8 +109,12 @@ export async function createMenuItem(_prevState: ActionState, formData: FormData
     labelIds: formData.getAll("labelIds"),
   });
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Please check the form." };
+  let membership;
   try {
-    await assertCanEditMenu(parsed.data.businessId);
+    membership = await requireBusinessMembership(parsed.data.businessId);
+    if (!(membership.role === "owner" || membership.permissions.includes("menu.edit"))) {
+      throw new Error("You don't have permission to edit the menu.");
+    }
   } catch (e) {
     return { error: (e as Error).message };
   }
@@ -162,6 +166,85 @@ export async function createMenuItem(_prevState: ActionState, formData: FormData
     }
   }
 
+  // Optional photo attached to the same "Add item" submission -- see
+  // uploadItemImageFile below. Requires the separate "media.upload"
+  // permission (see assertCanUploadMenuMedia), so someone with menu.edit
+  // but not media.upload who attaches a file here gets a clear
+  // partial-success message rather than the item silently missing a photo.
+  const imageFile = formData.get("image");
+  if (imageFile instanceof File && imageFile.size > 0) {
+    if (!(membership.role === "owner" || membership.permissions.includes("media.upload"))) {
+      revalidatePath("/dashboard/menu");
+      return { error: "Item added, but you don't have permission to upload images. Ask an owner to add the photo." };
+    }
+    const imgResult = await uploadItemImageFile(parsed.data.businessId, created.id, imageFile);
+    if (imgResult.error) {
+      revalidatePath("/dashboard/menu");
+      return { error: `Item added, but the photo couldn't be uploaded: ${imgResult.error}` };
+    }
+  }
+
+  revalidatePath("/dashboard/menu");
+  return { success: true };
+}
+
+// ---------------------------------------------------------------------------
+// Full edit (category, names, descriptions, price, discount, tags) -- every
+// other field (image, availability, visibility, labels) already has its own
+// dedicated inline control in menu-manager.tsx, so this action deliberately
+// only covers the fields that had no way to change after creation.
+// ---------------------------------------------------------------------------
+const itemUpdateSchema = z.object({
+  itemId: z.string().uuid(),
+  businessId: z.string().uuid(),
+  categoryId: z.string().uuid(),
+  nameEn: z.string().trim().min(1, "Item name is required."),
+  nameAr: z.string().trim().optional(),
+  nameKu: z.string().trim().optional(),
+  descriptionEn: z.string().trim().optional(),
+  descriptionAr: z.string().trim().optional(),
+  descriptionKu: z.string().trim().optional(),
+  price: z.coerce.number().min(0, "Price must be 0 or more."),
+  discountPrice: z.union([z.coerce.number().min(0), z.literal("")]).optional(),
+  tags: z.string().optional(),
+});
+
+export async function updateMenuItem(_prevState: ActionState, formData: FormData): Promise<ActionState> {
+  const parsed = itemUpdateSchema.safeParse(Object.fromEntries(formData.entries()));
+  if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Please check the form." };
+  try {
+    await assertCanEditMenu(parsed.data.businessId);
+  } catch (e) {
+    return { error: (e as Error).message };
+  }
+
+  const tags = (parsed.data.tags ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s): s is "popular" | "new" | "featured" => ["popular", "new", "featured"].includes(s));
+
+  const supabase = await createClient();
+  // Scoped to the caller's own business on every write, per RLS + this
+  // extra .eq belt-and-suspenders check (same pattern as
+  // setReviewSubmissionStatus in lib/actions/reviews.ts) -- an itemId from
+  // another business can never be updated even if guessed.
+  const { error } = await supabase
+    .from("menu_items")
+    .update({
+      category_id: parsed.data.categoryId,
+      name: { en: parsed.data.nameEn, ar: parsed.data.nameAr || parsed.data.nameEn, ku: parsed.data.nameKu || parsed.data.nameEn },
+      description: {
+        en: parsed.data.descriptionEn ?? "",
+        ar: parsed.data.descriptionAr ?? "",
+        ku: parsed.data.descriptionKu ?? "",
+      },
+      price: parsed.data.price,
+      discount_price: parsed.data.discountPrice === "" || parsed.data.discountPrice === undefined ? null : parsed.data.discountPrice,
+      tags,
+    })
+    .eq("id", parsed.data.itemId)
+    .eq("business_id", parsed.data.businessId);
+  if (error) return { error: "Could not save the item." };
   revalidatePath("/dashboard/menu");
   return { success: true };
 }
@@ -352,22 +435,17 @@ export async function setMenuLikesEnabled(businessId: string, enabled: boolean):
   return { success: true };
 }
 
-export async function uploadMenuItemImage(_prevState: ActionState, formData: FormData): Promise<ActionState> {
-  const businessId = formData.get("businessId");
-  const itemId = formData.get("itemId");
-  const file = formData.get("file");
-  if (typeof businessId !== "string" || typeof itemId !== "string") return { error: "Invalid request." };
-  if (!(file instanceof File) || file.size === 0) return { error: "Choose an image file." };
+/**
+ * Shared by uploadMenuItemImage (post-creation photo change/add) and
+ * createMenuItem (optional photo attached at creation time). Caller is
+ * responsible for permission checks -- this only does file validation, the
+ * plan feature-flag check, and the actual storage write.
+ */
+async function uploadItemImageFile(businessId: string, itemId: string, file: File): Promise<{ error?: string }> {
   if (!["image/png", "image/jpeg", "image/webp", "image/gif"].includes(file.type)) {
     return { error: "Please upload a PNG, JPEG, WEBP or GIF image." };
   }
   if (file.size > 5 * 1024 * 1024) return { error: "Images must be 5MB or smaller." };
-
-  try {
-    await assertCanUploadMenuMedia(businessId);
-  } catch (e) {
-    return { error: (e as Error).message };
-  }
 
   const supabase = await createClient();
 
@@ -387,7 +465,24 @@ export async function uploadMenuItemImage(_prevState: ActionState, formData: For
   const { data: publicUrl } = supabase.storage.from("business-media").getPublicUrl(path);
   const { error } = await supabase.from("menu_items").update({ image_url: publicUrl.publicUrl }).eq("id", itemId);
   if (error) return { error: "Uploaded, but could not attach it to the item." };
+  return {};
+}
 
+export async function uploadMenuItemImage(_prevState: ActionState, formData: FormData): Promise<ActionState> {
+  const businessId = formData.get("businessId");
+  const itemId = formData.get("itemId");
+  const file = formData.get("file");
+  if (typeof businessId !== "string" || typeof itemId !== "string") return { error: "Invalid request." };
+  if (!(file instanceof File) || file.size === 0) return { error: "Choose an image file." };
+
+  try {
+    await assertCanUploadMenuMedia(businessId);
+  } catch (e) {
+    return { error: (e as Error).message };
+  }
+
+  const result = await uploadItemImageFile(businessId, itemId, file);
+  if (result.error) return { error: result.error };
   revalidatePath("/dashboard/menu");
   return { success: true };
 }

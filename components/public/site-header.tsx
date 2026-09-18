@@ -88,7 +88,7 @@ export function SiteHeader({ navItems = [] }: { navItems?: NavItem[] }) {
               onClick={(e) => goHome(e, link.href)}
               target={link.openNewTab ? "_blank" : undefined}
               rel={link.openNewTab ? "noopener noreferrer" : undefined}
-              className="flex items-center gap-1.5 text-sm font-semibold text-ink-soft hover:text-accent"
+              className="flex items-center gap-1.5 text-sm font-semibold text-ink-soft transition-colors hover:text-accent"
             >
               {link.imageUrl ? (
                 <Image src={link.imageUrl} alt="" width={16} height={16} className="rounded-sm" />
@@ -102,7 +102,7 @@ export function SiteHeader({ navItems = [] }: { navItems?: NavItem[] }) {
 
         <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher />
-          <Link href="/login" className="text-sm font-semibold text-ink-soft hover:text-accent">
+          <Link href="/login" className="text-sm font-semibold text-ink-soft transition-colors hover:text-accent">
             {t("auth.signIn")}
           </Link>
           <Link href="/contact" className={buttonClass("primary", "sm")}>

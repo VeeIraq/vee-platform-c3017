@@ -75,9 +75,8 @@ export function DashboardShell({
   return (
     <div className="flex min-h-screen bg-fog">
       <aside className="hidden w-64 shrink-0 border-e border-line bg-paper p-4 md:flex md:flex-col">
-        <Link href="/" className="mb-6 flex items-center gap-2 px-2">
-          <Image src="/brand/vee-mark-square.png" alt="Vee" width={32} height={32} className="rounded-lg" />
-          <span className="text-lg font-extrabold text-ink">Vee</span>
+        <Link href="/" className="mb-6 flex items-center px-2">
+          <Image src="/brand/vee-logo-black.png" alt="Vee" width={100} height={34} />
         </Link>
         {nav}
         <div className="mt-auto flex flex-col gap-2 pt-4">

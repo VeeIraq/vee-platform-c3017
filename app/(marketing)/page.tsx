@@ -55,7 +55,7 @@ export default async function HomePage({
   const sectionNodes: Record<string, ReactNode> = {
     hero: (
       <section key="hero" className="relative flex min-h-[85vh] items-center overflow-hidden bg-ink px-4 py-20 text-white sm:px-6 sm:py-28">
-        <div className="mx-auto max-w-3xl text-center">
+        <div className="hero-enter mx-auto max-w-3xl text-center">
           {/* No wordmark here on purpose -- the sticky nav directly above
               already shows the Vee logo, so repeating it right below made
               the very top of the page feel cluttered. */}
@@ -84,17 +84,21 @@ export default async function HomePage({
     explain: (
       <section key="explain" className="px-4 py-20 sm:px-6 sm:py-24">
         <div className="mx-auto max-w-5xl">
-          <p className="eyebrow mb-2 text-sm font-bold uppercase tracking-widest text-accent-3">{tt("explain.eyebrow")}</p>
-          <h2 className="max-w-xl text-3xl font-extrabold text-ink">{tt("explain.title")}</h2>
-          <p className="mt-3 max-w-xl text-ink-muted">{tt("explain.sub")}</p>
+          <Reveal>
+            <p className="eyebrow mb-2 text-sm font-bold uppercase tracking-widest text-accent-3">{tt("explain.eyebrow")}</p>
+            <h2 className="max-w-xl text-3xl font-extrabold text-ink">{tt("explain.title")}</h2>
+            <p className="mt-3 max-w-xl text-ink-muted">{tt("explain.sub")}</p>
+          </Reveal>
           <ol className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {journeySteps.map((step, i) => (
-              <li key={step} className="flex items-center gap-3 rounded-[var(--radius-md)] border border-line bg-paper p-4">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-bold text-white">
-                  {i + 1}
-                </span>
-                <span className="font-semibold text-ink-soft">{step}</span>
-              </li>
+              <Reveal key={step} as="li" delayMs={(i % 4) * 60}>
+                <div className="hover-lift flex h-full items-center gap-3 rounded-[var(--radius-md)] border border-line bg-paper p-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent text-sm font-bold text-white">
+                    {i + 1}
+                  </span>
+                  <span className="font-semibold text-ink-soft">{step}</span>
+                </div>
+              </Reveal>
             ))}
           </ol>
           <p className="mt-6 max-w-xl text-sm text-ink-muted">{tt("explain.note")}</p>
@@ -162,23 +166,31 @@ export default async function HomePage({
           </div>
           {featuredProducts.length > 0 ? (
             <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {featuredProducts.map((product) => (
-                <li key={product.id} className="overflow-hidden rounded-[var(--radius-md)] border border-line bg-paper">
-                  <div className="flex aspect-square items-center justify-center bg-fog">
-                    {product.images?.[0] ? (
-                      <Image src={product.images[0]} alt="" width={260} height={260} className="h-full w-full object-cover" />
-                    ) : (
-                      <span className="text-4xl" aria-hidden="true">📇</span>
-                    )}
+              {featuredProducts.map((product, i) => (
+                <Reveal key={product.id} as="li" delayMs={(i % 4) * 60}>
+                  <div className="hover-lift group overflow-hidden rounded-[var(--radius-md)] border border-line bg-paper">
+                    <div className="flex aspect-square items-center justify-center overflow-hidden bg-fog">
+                      {product.images?.[0] ? (
+                        <Image
+                          src={product.images[0]}
+                          alt=""
+                          width={260}
+                          height={260}
+                          className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+                        />
+                      ) : (
+                        <span className="text-4xl" aria-hidden="true">📇</span>
+                      )}
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-bold text-ink">{pick(product.name, locale)}</h3>
+                      <p className="mt-1 line-clamp-2 text-sm text-ink-muted">{pick(product.description, locale)}</p>
+                      <Link href={`/products/${product.sku.toLowerCase()}`} className="mt-3 inline-block text-sm font-bold text-accent hover:underline">
+                        {tt("products.cta")}
+                      </Link>
+                    </div>
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-bold text-ink">{pick(product.name, locale)}</h3>
-                    <p className="mt-1 line-clamp-2 text-sm text-ink-muted">{pick(product.description, locale)}</p>
-                    <Link href={`/products/${product.sku.toLowerCase()}`} className="mt-3 inline-block text-sm font-bold text-accent hover:underline">
-                      {tt("products.cta")}
-                    </Link>
-                  </div>
-                </li>
+                </Reveal>
               ))}
             </ul>
           ) : (
@@ -197,14 +209,16 @@ export default async function HomePage({
           <p className="mb-2 text-sm font-bold uppercase tracking-widest text-accent-3">{tt("how.eyebrow")}</p>
           <h2 className="max-w-xl text-3xl font-extrabold text-ink">{tt("how.title")}</h2>
           <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {[1, 2, 3, 4].map((n) => (
-              <li key={n} className="rounded-[var(--radius-md)] bg-paper p-5 shadow-sm">
-                <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-accent text-sm font-bold text-white">
-                  {n}
-                </span>
-                <h3 className="font-bold text-ink">{tt(`how.step${n}Title`)}</h3>
-                <p className="mt-1.5 text-sm text-ink-muted">{tt(`how.step${n}Desc`)}</p>
-              </li>
+            {[1, 2, 3, 4].map((n, i) => (
+              <Reveal key={n} as="li" delayMs={i * 60}>
+                <div className="hover-lift h-full rounded-[var(--radius-md)] bg-paper p-5 shadow-sm">
+                  <span className="mb-3 flex h-9 w-9 items-center justify-center rounded-full bg-accent text-sm font-bold text-white">
+                    {n}
+                  </span>
+                  <h3 className="font-bold text-ink">{tt(`how.step${n}Title`)}</h3>
+                  <p className="mt-1.5 text-sm text-ink-muted">{tt(`how.step${n}Desc`)}</p>
+                </div>
+              </Reveal>
             ))}
           </ol>
         </div>
@@ -218,13 +232,13 @@ export default async function HomePage({
           <h2 className="max-w-xl text-3xl font-extrabold text-ink">{tt("plans.title")}</h2>
           <p className="mt-3 max-w-xl text-ink-muted">{tt("plans.sub")}</p>
           <ul className="mt-10 grid gap-5 lg:grid-cols-4">
-            {plans.map((plan) => {
+            {plans.map((plan, i) => {
               const popular = Boolean(plan.popular);
               const ctaText = pick(plan.cta, locale) || tt("nav.cta");
               return (
-                <li
-                  key={plan.id}
-                  className={`flex flex-col rounded-[var(--radius-lg)] border p-6 ${popular ? "border-accent shadow-lg" : "border-line"}`}
+                <Reveal key={plan.id} as="li" delayMs={i * 60} className="h-full">
+                <div
+                  className={`hover-lift flex h-full flex-col rounded-[var(--radius-lg)] border p-6 ${popular ? "border-accent shadow-lg" : "border-line"}`}
                 >
                   {popular && (
                     <span className="mb-3 inline-block w-fit rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-white">
@@ -259,7 +273,8 @@ export default async function HomePage({
                   <Link href={`/contact?plan=${plan.id}`} className={buttonClass(popular ? "primary" : "outline", "md", "mt-6 justify-center")}>
                     {ctaText}
                   </Link>
-                </li>
+                </div>
+                </Reveal>
               );
             })}
           </ul>
@@ -302,13 +317,15 @@ export default async function HomePage({
 
     contact: (
       <section key="contact" className="px-4 py-20 sm:px-6 sm:py-24">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-[var(--radius-lg)] bg-ink px-6 py-14 text-center text-white">
-          <h2 className="text-3xl font-extrabold">{tt("contact.title")}</h2>
-          <p className="max-w-md text-paper-muted">{tt("contact.sub")}</p>
-          <Link href="/contact" className={buttonClass("primary", "md")}>
-            {tt("contact.ctaSecondary")}
-          </Link>
-        </div>
+        <Reveal>
+          <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-[var(--radius-lg)] bg-ink px-6 py-14 text-center text-white">
+            <h2 className="text-3xl font-extrabold">{tt("contact.title")}</h2>
+            <p className="max-w-md text-paper-muted">{tt("contact.sub")}</p>
+            <Link href="/contact" className={buttonClass("primary", "md")}>
+              {tt("contact.ctaSecondary")}
+            </Link>
+          </div>
+        </Reveal>
       </section>
     ),
   };

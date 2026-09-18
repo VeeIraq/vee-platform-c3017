@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getActiveBusiness } from "@/lib/data/dashboard";
 import { createClient } from "@/lib/supabase/server";
+import { getServerDictionary } from "@/lib/i18n/server";
+import { t } from "@/lib/i18n/dictionaries";
 import { PublishToggle } from "./publish-toggle";
 
 async function getQuickStats(businessId: string) {
@@ -18,12 +20,14 @@ async function getQuickStats(businessId: string) {
 export default async function DashboardOverviewPage() {
   const { business, membership } = await getActiveBusiness();
   const stats = await getQuickStats(business.id);
+  const { dict } = await getServerDictionary();
+  const dt = (key: string) => t(dict, `dashboard.${key}`);
 
   const checklist = [
-    { done: !!business.logo_url, label: "Upload your logo", href: "/dashboard/profile" },
-    { done: !!(business.name as Record<string, string>)?.en, label: "Add your business name", href: "/dashboard/profile" },
-    { done: !!(business.description as Record<string, string>)?.en, label: "Write a description", href: "/dashboard/profile" },
-    { done: !!business.whatsapp_number || !!business.phone, label: "Add a WhatsApp number or phone", href: "/dashboard/profile" },
+    { done: !!business.logo_url, label: dt("checklistLogo"), href: "/dashboard/profile" },
+    { done: !!(business.name as Record<string, string>)?.en, label: dt("checklistName"), href: "/dashboard/profile" },
+    { done: !!(business.description as Record<string, string>)?.en, label: dt("checklistDescription"), href: "/dashboard/profile" },
+    { done: !!business.whatsapp_number || !!business.phone, label: dt("checklistContact"), href: "/dashboard/profile" },
   ];
 
   return (
@@ -31,11 +35,9 @@ export default async function DashboardOverviewPage() {
       <section className="rounded-[var(--radius-lg)] border border-line bg-paper p-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg font-extrabold text-ink">Publish status</h2>
+            <h2 className="text-lg font-extrabold text-ink">{dt("publishStatusTitle")}</h2>
             <p className="mt-1 text-sm text-ink-muted">
-              {business.status === "published"
-                ? "Your profile is live at vee.iq/" + business.username
-                : "Your profile is a draft — publish it once it's ready for customers."}
+              {business.status === "published" ? `${dt("profileLiveNote")} vee.iq/${business.username}` : dt("profileDraftNote")}
             </p>
           </div>
           <PublishToggle businessId={business.id} status={business.status} canPublish={membership.role === "owner"} />
@@ -43,13 +45,13 @@ export default async function DashboardOverviewPage() {
       </section>
 
       <section>
-        <h2 className="mb-3 text-lg font-extrabold text-ink">Last 30 days</h2>
+        <h2 className="mb-3 text-lg font-extrabold text-ink">{dt("last30Days")}</h2>
         <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {[
-            ["Profile views", stats.views],
-            ["Menu views", stats.menuViews],
-            ["WhatsApp clicks", stats.whatsappClicks],
-            ["Orders", stats.orders],
+            [dt("statProfileViews"), stats.views],
+            [dt("statMenuViews"), stats.menuViews],
+            [dt("statWhatsappClicks"), stats.whatsappClicks],
+            [dt("statOrders"), stats.orders],
           ].map(([label, value]) => (
             <div key={label as string} className="rounded-[var(--radius-md)] border border-line bg-paper p-4">
               <dt className="text-xs font-semibold text-ink-muted">{label}</dt>
@@ -60,7 +62,7 @@ export default async function DashboardOverviewPage() {
       </section>
 
       <section className="rounded-[var(--radius-lg)] border border-line bg-paper p-6">
-        <h2 className="text-lg font-extrabold text-ink">Get set up</h2>
+        <h2 className="text-lg font-extrabold text-ink">{dt("getSetUp")}</h2>
         <ul className="mt-4 flex flex-col gap-2.5">
           {checklist.map((item) => (
             <li key={item.label} className="flex items-center justify-between gap-3">
@@ -70,7 +72,7 @@ export default async function DashboardOverviewPage() {
               </span>
               {!item.done && (
                 <Link href={item.href} className="text-sm font-semibold text-accent hover:underline">
-                  Add
+                  {dt("addAction")}
                 </Link>
               )}
             </li>

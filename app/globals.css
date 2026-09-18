@@ -181,6 +181,29 @@ body {
   }
 }
 
+/*
+ * Hero entrance -- plays once on page load rather than on scroll (the hero
+ * is already in view on arrival, so an IntersectionObserver-driven Reveal
+ * would never fire). Pure CSS, no JS, so it's as safe under
+ * prefers-reduced-motion as everything else here: the animation only
+ * exists inside the no-preference query, exactly like .reveal above.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-enter {
+    animation: hero-enter 0.7s ease-out both;
+  }
+  @keyframes hero-enter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
 /* Shadow lift stays even under reduced motion -- it's a state change, not movement. */
 .hover-lift:hover,
 .hover-lift:focus-visible {

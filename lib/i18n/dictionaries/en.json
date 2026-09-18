@@ -416,11 +416,28 @@
     "productsTitle": "Products",
     "locationsTitle": "Locations",
     "primaryLocation": "Primary location",
-    "securityNote": "Password, login and account access."
+    "securityNote": "Password, login and account access.",
+    "publishStatusTitle": "Publish status",
+    "profileLiveNote": "Your profile is live at",
+    "profileDraftNote": "Your profile is a draft — publish it once it's ready for customers.",
+    "last30Days": "Last 30 days",
+    "statProfileViews": "Profile views",
+    "statMenuViews": "Menu views",
+    "statWhatsappClicks": "WhatsApp clicks",
+    "statOrders": "Orders",
+    "getSetUp": "Get set up",
+    "checklistLogo": "Upload your logo",
+    "checklistName": "Add your business name",
+    "checklistDescription": "Write a description",
+    "checklistContact": "Add a WhatsApp number or phone",
+    "addAction": "Add"
   },
   "admin": {
     "demoBanner": "Internal tool preview — no real account data. For Vee staff only.",
     "navBusinesses": "Businesses",
+    "navOverview": "Overview",
+    "navLeads": "Leads",
+    "navCatalogue": "Catalogue",
     "navUsers": "Users",
     "navPlans": "Plans",
     "navSubscriptions": "Subscriptions",
@@ -459,7 +476,16 @@
     "contentType": "Type",
     "contentUpdated": "Updated",
     "systemNote": "Platform-wide configuration for Vee staff only.",
-    "plansNote": "Plan definitions are managed centrally — pricing and feature changes apply platform-wide, without rebuilding the website."
+    "plansNote": "Plan definitions are managed centrally — pricing and feature changes apply platform-wide, without rebuilding the website.",
+    "navAnalytics": "Analytics",
+    "navNav": "Navigation",
+    "navTranslations": "Translations",
+    "navPricing": "Pricing",
+    "navFeatureFlags": "Feature flags",
+    "signOut": "Sign out",
+    "signedInAs": "Signed in as",
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu"
   },
   "common": {
     "demoNotice": "This is a demo account with sample data — a real Vee business looks and works exactly like this."

@@ -4,7 +4,7 @@ type Variant = "primary" | "outline" | "ghost" | "danger";
 type Size = "md" | "sm";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-[var(--radius-sm)] font-semibold transition-transform focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline disabled:opacity-60 disabled:cursor-not-allowed min-h-11";
+  "inline-flex items-center justify-center gap-2 rounded-[var(--radius-sm)] font-semibold transition-transform duration-150 ease-out focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline disabled:opacity-60 disabled:cursor-not-allowed min-h-11 motion-safe:hover:-translate-y-0.5 motion-safe:active:translate-y-0";
 
 const variants: Record<Variant, string> = {
   primary: "text-white shadow-md [background:var(--accent-grad)] hover:brightness-105 active:scale-[0.98]",

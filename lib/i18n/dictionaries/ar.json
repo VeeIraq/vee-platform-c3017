@@ -416,11 +416,28 @@
     "productsTitle": "المنتجات",
     "locationsTitle": "الفروع",
     "primaryLocation": "الفرع الرئيسي",
-    "securityNote": "كلمة المرور وتسجيل الدخول والوصول إلى الحساب."
+    "securityNote": "كلمة المرور وتسجيل الدخول والوصول إلى الحساب.",
+    "publishStatusTitle": "حالة النشر",
+    "profileLiveNote": "ملفك منشور مباشرةً على",
+    "profileDraftNote": "ملفك في وضع المسودة — انشره عندما يصبح جاهزًا لعملائك.",
+    "last30Days": "آخر 30 يومًا",
+    "statProfileViews": "مشاهدات الملف",
+    "statMenuViews": "مشاهدات القائمة",
+    "statWhatsappClicks": "نقرات واتساب",
+    "statOrders": "الطلبات",
+    "getSetUp": "أكمل الإعداد",
+    "checklistLogo": "ارفع شعارك",
+    "checklistName": "أضف اسم عملك",
+    "checklistDescription": "اكتب وصفًا",
+    "checklistContact": "أضف رقم واتساب أو هاتف",
+    "addAction": "إضافة"
   },
   "admin": {
     "demoBanner": "معاينة أداة داخلية — بلا بيانات حسابات حقيقية. لفريق Vee فقط.",
     "navBusinesses": "الأعمال",
+    "navOverview": "نظرة عامة",
+    "navLeads": "العملاء المحتملون",
+    "navCatalogue": "الكتالوج",
     "navUsers": "المستخدمون",
     "navPlans": "الخطط",
     "navSubscriptions": "الاشتراكات",
@@ -459,7 +476,16 @@
     "contentType": "النوع",
     "contentUpdated": "آخر تحديث",
     "systemNote": "إعدادات على مستوى المنصة، لفريق Vee فقط.",
-    "plansNote": "تُدار تعريفات الخطط مركزيًا — تُطبَّق تغييرات الأسعار والميزات على مستوى المنصة دون إعادة بناء الموقع."
+    "plansNote": "تُدار تعريفات الخطط مركزيًا — تُطبَّق تغييرات الأسعار والميزات على مستوى المنصة دون إعادة بناء الموقع.",
+    "navAnalytics": "التحليلات",
+    "navNav": "التنقل",
+    "navTranslations": "الترجمات",
+    "navPricing": "التسعير",
+    "navFeatureFlags": "أعلام الميزات",
+    "signOut": "تسجيل الخروج",
+    "signedInAs": "مسجل الدخول باسم",
+    "closeMenu": "إغلاق القائمة",
+    "openMenu": "فتح القائمة"
   },
   "common": {
     "demoNotice": "هذا حساب تجريبي ببيانات نموذجية — يبدو ويعمل حساب Vee الحقيقي تمامًا بهذا الشكل."
